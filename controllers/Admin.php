@@ -139,6 +139,40 @@
             }
         }
 
+        public function getLocationProperty()
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 AND type = "location"');
+            $query->execute();
+
+            $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($allProperties){
+                return $allProperties;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function getBuyProperty()
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 AND type = "vendre"');
+            $query->execute();
+
+            $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($allProperties){
+                return $allProperties;
+            }
+            else {
+                return false;
+            }
+        }
+
         public function getnotActiveProperty()
         {
             $database = new ADatabase();
@@ -165,6 +199,56 @@
             $query->execute();
 
             $property = $query->fetch(PDO::FETCH_ASSOC);
+            if($property){
+                return $property;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function searchProperty($search)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"');
+            $query->execute();
+
+            $property = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($property){
+                return $property;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function searchPropertyType($search, $type)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"'.' AND type = '.'"'.$type.'"');
+            $query->execute();
+
+            $property = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($property){
+                return $property;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function vueIncrement($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE `proprietes` SET `vue` = (`vue`+1) WHERE `proprietes`.`prop_id` = $id");
+            $property=$query->execute();
+
             if($property){
                 return $property;
             }

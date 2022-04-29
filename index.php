@@ -24,16 +24,31 @@
         require 'views/signup.php';
     });
 
-    $router->map('GET', '/immoavril/propriete/[*:id]',function($id){
+    $router->map('GET', '/immoavril/a_louer',function(){
+        $adminClass = new Admin();
+        $properties = $adminClass->getLocationProperty();//Les propriétés en location
+        require 'views/home.php';
+    });
+
+    $router->map('GET', '/immoavril/en_vente',function(){
+        $adminClass = new Admin();
+        $properties = $adminClass->getBuyProperty();//Les propriétés en vente
+        require 'views/home.php';
+    });
+
+    $router->map('GET', '/immoavril/propriete/[*:id]',function($id)
+    {
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
+        $Increment = $adminClass->vueIncrement($id);//augmenter la vue de la propriété
         require 'views/voir.php';
     });
 
 
     /* ------------- ADMIN ROUTES ------------------*/
     /* GET */
-    $router->map('GET', '/immoavril/admin',function(){
+    $router->map('GET', '/immoavril/admin',function()
+    {
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();//Les utilisateurs
@@ -43,7 +58,8 @@
         require 'views/admin/home.php';
     });
 
-    $router->map('GET', '/immoavril/admin/propriete',function(){
+    $router->map('GET', '/immoavril/admin/propriete',function()
+    {
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
@@ -62,7 +78,8 @@
         
     });
 
-    $router->map('GET', '/immoavril/admin/utilisateur',function(){
+    $router->map('GET', '/immoavril/admin/utilisateur',function()
+    {
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();
@@ -75,7 +92,8 @@
 
 
     /* POST */
-    $router->map('POST', '/immoavril/admin/propriete/add',function(){
+    $router->map('POST', '/immoavril/admin/propriete/add',function()
+    {
         if(isset($_POST['submit']))
         {
             if(!empty($_POST['titre']) && !empty($_POST['nombre_piece']) && !empty($_POST['nombre_chambre']) && !empty($_POST['nombre_douche']) && !empty($_POST['nombre_wc']) && !empty($_POST['addresse']) && !empty($_POST['superficie']) && !empty($_POST['type']) && !empty($_POST['prix']) && !empty($_POST['description']) && !empty($_POST['nom_proprio']) && !empty($_POST['tel_proprio']))
@@ -130,17 +148,41 @@
 
     /* ------------- CUSTOMERS ROUTES ------------------*/
     /* GET */
-    $router->map('GET', '/immoavril/customer',function(){
+    $router->map('GET', '/immoavril/customer',function()
+    {
         $adminClass = new Admin();
         $properties = $adminClass->getActiveProperty();//Les propriétés activées
+        if(!empty($_GET['search'])){
+            $properties = $adminClass->searchProperty(strip_tags($_GET['search']));
+        }
         require 'views/customers/home.php';
     });
 
-    $router->map('GET', '/immoavril/customer/compte',function(){
+    $router->map('GET', '/immoavril/customer/a_louer',function(){
+        $adminClass = new Admin();
+        $properties = $adminClass->getLocationProperty();//Les propriétés en location
+        if(!empty($_GET['search'])){
+            $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'location');
+        }
+        require 'views/customers/home.php';
+    });
+
+    $router->map('GET', '/immoavril/customer/en_vente',function(){
+        $adminClass = new Admin();
+        $properties = $adminClass->getBuyProperty();//Les propriétés en vente
+        if(!empty($_GET['search'])){
+            $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'vendre');
+        }
+        require 'views/customers/home.php';
+    });
+
+    $router->map('GET', '/immoavril/customer/compte',function()
+    {
         require 'views/customers/dashboard.php';
     });
 
-    $router->map('GET', '/immoavril/customer/propriete_consulter/[*:id]',function($id){
+    $router->map('GET', '/immoavril/customer/propriete_consulter/[*:id]',function($id)
+    {
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
         require 'views/customers/voir.php';

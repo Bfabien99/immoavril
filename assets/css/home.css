@@ -1,6 +1,7 @@
 .propertiesBlock{
     margin: 0 auto;
     width: 95%;
+    max-width: 1300px;
     margin-top: 50px;
     padding: 10px 20px;
     display: grid;

@@ -145,7 +145,7 @@ function setupMap(center){
     
       const marker = new mapboxgl.Marker()
             .setLngLat([<?php echo $_SESSION['xmobilier_lng'];?>, <?php echo $_SESSION['xmobilier_lat'];?>])
-            .setPopup(new mapboxgl.Popup().setHTML("<h4><?php echo $property['prix']?> fcfa</h4><p><?php echo urldecode($location)?></p><p><?php echo $property['Description']?></p>"))
+            .setPopup(new mapboxgl.Popup().setHTML("<h4><?php echo $property['prix']?> fcfa</h4><p><?php echo urldecode($location)?></p>"))
             .addTo(map); // add the marker to the map
         
             marker.togglePopup(); // toggle popup open or closed

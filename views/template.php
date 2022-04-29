@@ -12,9 +12,9 @@
         <div class="left">
             <div class="logo">LOGO</div>
             <ul class="navigation">
-                <li><a href="">Accueil</a></li>
-                <li><a href="">Location</a></li>
-                <li><a href="">En vente</a></li>
+                <li><a href="/immoavril/">Accueil</a></li>
+                <li><a href="a_louer">Location</a></li>
+                <li><a href="en_vente">En vente</a></li>
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -29,7 +29,7 @@
     <?php if($title !== "propriete"):?>
     <section>
         <form action="">
-            <input type="search" name="" id="" placeholder="Recherche par prix, localisation...">
+            <input type="search" name="search" id="locationSearch" placeholder="Recherche par prix, localisation...">
             <input type="submit" value="🔍">
         </form>
     </section>
@@ -78,6 +78,16 @@
     </div>
 </body>
 <script>
- 
+    let autocomplete;
+    function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('locationSearch'), 
+            {
+             types: ['establishment'],
+             componentRestrictions: {country: ['CI']},
+             fields: ['place_id','address_components', 'geometry', 'icon', 'name']
+            });
+
+    }
 </script>
 </html>
