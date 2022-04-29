@@ -1,0 +1,126 @@
+.propertyBlock{
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+.propertyBlock img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.userBlock{
+    position: relative;
+    width: 80%;
+    max-width:500px;
+    background-color:var(--white);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap:1em;
+    min-height: 100px;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.userBlock img{
+    width: 150px;
+}
+
+.propertyInfo{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 80%;
+    max-width: 700px;
+    padding:10px 0px;
+    align-items: center;
+}
+
+.propertyInfo .detail,
+.propertyInfo .description{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    background: var(--white);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.propertyInfo .detail h3,
+.propertyInfo .description h3,
+.propertyInfo .description p{
+    font-weight: 600;
+    padding: 10px;
+}
+
+.propertyInfo .detail div{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-row-gap: 10px;
+    padding: 10px;
+}
+
+.propertyInfo .detail div h4 span{
+    color: var(--black2);
+}
+
+.propertyInfo .description p{
+    line-height: 20px;
+}
+
+.propertyInfo form{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    background-color: var(--white);
+    padding-bottom: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.propertyInfo form h2{
+    color: var(--white);
+    background: var(--blue);
+    padding: 10px;
+    text-align: center;
+}
+
+.propertyInfo form input[type="submit"]{
+    width: 40%;
+    max-width:100px;
+    padding:10px 5px;
+    margin: 0 auto;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: var(--white);
+    background: var(--blue);
+    cursor: pointer;
+}
+
+.propertyInfo form .group{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width:500px;
+    gap: 5px;
+    padding: 20px;
+}
+
+.propertyInfo form .group label{
+    font-weight: 600;
+}
+
+.propertyInfo form .group input{
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    height:30px;
+    padding:5px 20px;
+}

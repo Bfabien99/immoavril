@@ -1,0 +1,114 @@
+.propertiesBlock{
+    margin: 0 auto;
+    width: 95%;
+    margin-top: 50px;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 20px;
+}
+
+.propertiesBlock .cardBox{
+    position: relative;
+    background-color:var(--white);
+    height:500px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 220px 1fr;
+    border-radius: 6px;
+}
+
+.propertiesBlock .cardBox .cardImg{
+    background-color: black;
+    border-radius:6px 6px  0px 0px;
+    overflow: hidden;
+}
+.propertiesBlock .cardBox .cardImg img{
+    width: 100%;
+    height: 100%;
+}
+.propertiesBlock .cardBox .cardContent{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    padding: 0 10px;
+}
+
+.propertiesBlock .cardBox .cardContent .icon{
+    filter: invert(1);
+    width: 20px;
+    padding: 2px;
+    background-color:rgba(245, 245, 245, 0.3);
+    border-radius:50%;
+    object-fit: cover;
+}
+
+.propertiesBlock .cardBox .cardContent .type_price, 
+.propertiesBlock .cardBox .cardContent .title_view{
+    display: flex;
+    justify-content: space-between;
+}
+
+.propertiesBlock .cardBox .cardContent .type_price span{
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: var(--black2);
+    background:rgba(245, 245, 245, 1);
+}
+
+.propertiesBlock .cardBox .cardContent .type_price h2{
+    color: var(--blue);
+}
+
+.propertiesBlock .cardBox .cardContent .title_view h4{
+    color: var(--black2);
+}
+
+.propertiesBlock .cardBox .cardContent .info{
+    text-align:right;
+    color: var(--black2);
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+}
+
+.propertiesBlock .cardBox .cardContent .info span{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+}
+
+.propertiesBlock .cardBox .cardContent .localisation{
+    display: flex;
+    justify-content: space-between;
+    color: var(--black2);
+    border-top:1px solid var(--black2);
+    padding-top:10px;
+}
+
+.propertiesBlock .cardBox .cardContent .localisation .voir{
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color:var(--blue);
+    border-radius:6px
+}
+
+
+@media screen and (max-width: 991px){
+    .propertiesBlock{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        grid-gap: 20px;
+        grid-row-gap: 40px;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .propertiesBlock{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+        grid-row-gap: 40px;
+    }
+}
