@@ -19,21 +19,18 @@
             }
         }
 
-        public function updateCustomer($nom, $prenoms, $pseudo, $contact, $email, $password, $photo)
+        public function updateCustomer($id,$nom, $prenoms, $contact, $photo)
         {
             $database = new CDatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare("UPDATE customers SET (cust_nom=:nom, cust_prenoms=:prenoms, cust_pseudo=:pseudo, cust_contact=:contact, cust_email=:email, cust_password=:password, cust_photo=:photo)");
+            $query = $db->prepare("UPDATE customers SET cust_nom=:nom, cust_prenoms=:prenoms, cust_contact=:contact, cust_photo=:photo WHERE cust_id=$id");
 
             $insert = $query->execute(
                 [
                     "nom" => inputClean($nom),
                     "prenoms" => inputClean($prenoms),
-                    "pseudo" => inputClean($pseudo),
                     "contact" => inputClean($contact),
-                    "email" => inputClean($email),
-                    "password" => encryptpass(strip_tags($password)),
                     "photo" => $photo,
                 ]
             );
@@ -47,6 +44,64 @@
                 return false;
             } 
             
+        }
+
+        public function updateCustomer2($id, $pseudo, $email, $password)
+        {
+            $database = new CDatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE customers SET cust_pseudo=:pseudo, cust_email=:email, cust_password=:password WHERE cust_id=$id");
+
+            $insert = $query->execute(
+                [
+                    "pseudo" => inputClean($pseudo),
+                    "email" => inputClean($email),
+                    "password" => $password
+                ]
+            );
+
+            if($insert)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            } 
+            
+        }
+        
+
+        public function insertCustProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image)
+        {
+            $database = new CDatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("INSERT INTO proprietes (titre, nb_piece,	nb_chambre,	nb_douche,	nb_wc, addresse, superficie, type, prix, Description, image, customer_id, enable) VALUES (:titre, :nb_piece, :nb_chambre, :nb_douche, :nb_wc, :addresse, :superficie, :type, :prix, :Description, :image, :customer_id, :enable)");
+            $insert = $query->execute([
+                "titre" => $titre,
+                "nb_piece" => $nb_piece,
+                "nb_chambre" => $nb_chambre,
+                "nb_douche" => $nb_douche,
+                "nb_wc" => $nb_wc,
+                "addresse" => $addresse,
+                "superficie" => $superficie,
+                "type" => $type,
+                "prix" => $prix,
+                "Description" => $Description,
+                "image" => $image,
+                "customer_id" => $id,
+                "enable" => 0
+            ]);
+
+            if($insert){
+                return true;
+            }
+            else {
+                return false;
+            }
+
         }
 
     }

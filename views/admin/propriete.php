@@ -2,12 +2,12 @@
 define('IMG_PATHS','\immoavril\assets\images\icon\\');
 define('PROPERTY_IMG','\immoavril\uploads\\');
 $title = 'proprietes';
-$search = '<div class="search">
+$search = '<form class="search" method="GET">
 <label for="search">
-    <input type="search" name="search" id="search" placeholder="Search..." autocomplete="off">
+    <input type="search" name="search" id="locationSearch" placeholder="Search..." autocomplete="off">
     <img src="'.IMG_PATHS.'search.png'.'" alt="search" class="search_icon">
 </label>
-</div>';
+</form>';
 ob_start();
 ?>
 <style>
@@ -108,7 +108,7 @@ ob_start();
                     <td><?= $property['titre']; ?></td>
                     <td><?= $property['addresse']; ?></td>
                     <td><?= $property['superficie']; ?></td>
-                    <td><?php if($property['enable'] = 1) echo "non"; else echo "oui"; ?></td>
+                    <td><?= ($property['enable'] == 1) ? "oui":"non" ; ?></td>
                     <td class="action"><a href="/immoavril/admin/propriete/edit/<?= $property['prop_id']; ?>" class="edit">Editer</a><a href="/immoavril/admin/propriete/delete/<?= $property['prop_id']; ?>" class="delete">Supp</a></td>
                 </tr>
                 <?php endforeach;?>

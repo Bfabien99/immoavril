@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="left">
-            <div class="logo">LOGO</div>
+            <div class="logo">X-mobilier</div>
             <ul class="navigation">
                 <li><a href="/immoavril/">Accueil</a></li>
                 <li><a href="a_louer">Location</a></li>

@@ -1,3 +1,4 @@
+<?php define('PROPERTY_IMG','\immoavril\uploads\\');?>
 <style>
     header{
         position: sticky;
@@ -23,16 +24,16 @@
 <header>
     <img src="" alt="">
     <ul class="navigation">
-        <li><a href="">Accueil</a></li>
-        <li><a href="">Propriétés</a></li>
-        <li><a href="">Messages</a></li>
-        <li><a href="">Profil</a></li>
-        <li><a href="">Securité</a></li>
+        <li><a href="/immoavril/customer/compte">Accueil</a></li>
+        <li><a href="/immoavril/customer/compte/propriete">Propriétés</a></li>
+        <li><a href="/immoavril/customer/compte/messages">Messages</a></li>
+        <li><a href="/immoavril/customer/compte/profil">Profil</a></li>
+        <li><a href="/immoavril/customer/compte/securite">Securité</a></li>
     </ul>
     <a href="/immoavril/customer" class="back">Retour</a>
 </header>
 <script>
-    setInterval(function(){
-        window.location.reload();
-    },3000)
+    // setInterval(function(){
+    //     window.location.reload();
+    // },3000)
 </script>

@@ -73,12 +73,12 @@
             }
         }
 
-        public function insertProperty($titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom_proprio, $contact_proprio)
+        public function insertProperty($titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom_proprio, $email_proprio, $contact_proprio)
         {
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare("INSERT INTO proprietes (titre, nb_piece,	nb_chambre,	nb_douche,	nb_wc, addresse, superficie, type, prix,	Description, image,	nom_proprio, contact_proprio, enable) VALUES (:titre, :nb_piece, :nb_chambre, :nb_douche, :nb_wc, :addresse, :superficie, :type, :prix, :Description, :image, :nom_proprio, :contact_proprio, :enable)");
+            $query = $db->prepare("INSERT INTO proprietes (titre, nb_piece,	nb_chambre,	nb_douche,	nb_wc, addresse, superficie, type, prix,	Description, image,	nom_proprio, contact_proprio, email_proprio, enable) VALUES (:titre, :nb_piece, :nb_chambre, :nb_douche, :nb_wc, :addresse, :superficie, :type, :prix, :Description, :image, :nom_proprio, :contact_proprio, :email_proprio, :enable)");
             $insert = $query->execute([
                 "titre" => $titre,
                 "nb_piece" => $nb_piece,
@@ -93,6 +93,7 @@
                 "image" => $image,
                 "nom_proprio" => $nom_proprio,
                 "contact_proprio" => $contact_proprio,
+                "email_proprio" => $email_proprio,
                 "enable" => 1
             ]);
 
@@ -103,6 +104,89 @@
                 return false;
             }
 
+        }
+
+        public function updateProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom_proprio, $email_proprio, $contact_proprio)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE proprietes SET titre=:titre, nb_piece=:nb_piece,	nb_chambre=:nb_chambre,	nb_douche=:nb_douche,	nb_wc=:nb_wc, addresse=:addresse, superficie=:superficie, type=:type, prix=:prix, Description=:Description, image=:image, nom_proprio=:nom_proprio, email_proprio=:email_proprio, contact_proprio=:contact_proprio WHERE prop_id =:id");
+            $insert = $query->execute([
+                "id" => $id,
+                "titre" => $titre,
+                "nb_piece" => $nb_piece,
+                "nb_chambre" => $nb_chambre,
+                "nb_douche" => $nb_douche,
+                "nb_wc" => $nb_wc,
+                "addresse" => $addresse,
+                "superficie" => $superficie,
+                "type" => $type,
+                "prix" => $prix,
+                "Description" => $Description,
+                "image" => $image,
+                "nom_proprio" => $nom_proprio,
+                "contact_proprio" => $contact_proprio,
+                "email_proprio" => $email_proprio,
+            ]);
+
+            if($insert){
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        public function activateProperty($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE proprietes SET enable = 1 WHERE prop_id = $id");
+            $activate = $query->execute();
+
+            if($activate){
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        public function desactivateProperty($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE proprietes SET enable = 0 WHERE prop_id = $id");
+            $desactivate = $query->execute();
+
+            if($desactivate){
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        public function deleteProperty($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("DELETE FROM proprietes WHERE prop_id = $id");
+            $property = $query->execute();
+
+            if($property){
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
         public function getAllProperty()

@@ -61,9 +61,10 @@ ob_start();
         background: red;
     }
 </style>
-<div class="users">
+<?php if(!empty($customers)):?>
+    <div class="users">
         <div class="cardHeader">
-            <h2><span>3</span> inscrit(s) au total</h2>
+            <h2><span><?= count($customers)?></span> inscrit(s) au total</h2>
         </div>
         <table>
             <thead>
@@ -73,6 +74,7 @@ ob_start();
                     <td>Nom</td>
                     <td>Prénoms</td>
                     <td>Contact</td>
+                    <td>Publication</td>
                     <td colspan="2">Action</td>
                 </tr>
 
@@ -80,7 +82,7 @@ ob_start();
 
             <tbody>
 
-            <?php if(!empty($customers)):?>
+            
                 <?php foreach($customers as $customer):?>
                 <tr>
                     <td width="60px">
@@ -91,14 +93,15 @@ ob_start();
                     <td><?= ucfirst($customer['cust_nom']);?></td>
                     <td><?= ucwords($customer['cust_prenoms']);?></td>
                     <td><?= $customer['cust_contact'];?></td>
-                    <td class="action"><a href="/immoavril/admin/utilisateur/edit/<?= $customer['cust_id'];?>" class="edit">Voir</a><a href="/immoavril/admin/utilisateur/delete/<?= $customer['cust_id'];?>" class="delete">Supp</a></td>
+                    <td>2</td>
+                    <td class="action"><a href="/immoavril/admin/utilisateur/delete/<?= $customer['cust_id'];?>" class="delete">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
-            <?php endif;?>
 
             </tbody>
         </table>
     </div>
+<?php endif;?>
 <?php
 $content = ob_get_clean();
 require 'template.php';

@@ -1,13 +1,10 @@
 <?php
 define('IMG_PATH','\immoavril\assets\images\icon\\');
 define('PROPERTY_IMG','\immoavril\uploads\\');
-$title = "Accueil";
 ob_start();
 ?>  
-
-    <div class="propertiesBlock">
-
     <?php if(!empty($properties)):?>
+    <div class="propertiesBlock">
         <?php foreach($properties as $property):?>
         <div class="cardBox">
             <div class="cardImg">
@@ -34,11 +31,15 @@ ob_start();
             </div>
         </div>
         <?php endforeach;?>
-    <?php endif;?>
-
     </div>
 
-    <a href="" id="loadmore">Charger plus</a>
+    <?php if($title == "Accueil"):?>
+        <a href="" id="loadmore">Charger plus</a>
+    <?php endif;?>
+    
+    <?php else:?>
+        <h3>Désolé, nous n'avons trouvé aucun résultat</h3>
+    <?php endif;?>
 <?php
 $content = ob_get_clean();
 require 'template.php';

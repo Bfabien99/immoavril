@@ -119,7 +119,6 @@ else{
 
 
 curl_close($curl);
-echo $_SESSION['xmobilier_lat'];
 ?>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmFiaWVuYnJvdTk5IiwiYSI6ImNsMmthZDM5aTBlYzYza2wxYmUwNjQzeDMifQ.WBt2pWQTIbQpj1fZMi3IWQ';

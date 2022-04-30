@@ -476,7 +476,7 @@
                 <li>
                     <a href="#">
                         <img src="<?= IMG_PATH.'apple_logo.png'; ?>" alt="apple" class="icon">
-                        <span class="title">Brand name</span>
+                        <span class="title">X-mobilier</span>
                     </a>
                 </li>
 
@@ -567,5 +567,18 @@
         item.classList.add('hovered')
     }));
     
+</script>
+<script>
+    let autocomplete;
+    function initAutocomplete() {
+        autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('locationSearch'), 
+            {
+             types: ['establishment'],
+             componentRestrictions: {country: ['CI']},
+             fields: ['place_id','address_components', 'geometry', 'icon', 'name']
+            });
+
+    }
 </script>
 </html>

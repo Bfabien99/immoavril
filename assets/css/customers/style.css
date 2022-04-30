@@ -71,6 +71,7 @@ header a{
     position: relative;
     display: grid;
     grid-template-columns:repeat(6,1fr);
+    align-items: center;
     grid-gap: 10px;
     list-style:none;
 }
