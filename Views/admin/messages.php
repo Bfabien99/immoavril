@@ -1,6 +1,6 @@
 <?php 
 define('IMG_PATHS','\immoavril\assets\images\icon\\');
-$title = 'utilisateurs';
+$title = 'message';
 $search = '<form class="search" method="get" action="">
 <label for="search">
     <input type="search" name="search" id="search" placeholder="Search..." autocomplete="off">
@@ -19,7 +19,7 @@ ob_start();
         box-shadow:0 7px 25px rgba(0,0,0,0.08);
         border-radius:20px;
         display: grid;
-        min-height: 400px;
+        min-height: 250px;
         max-height: 600px;
         overflow: auto;
         grid-template-rows: 50px 1fr;
@@ -60,40 +60,53 @@ ob_start();
     .delete{
         background: red;
     }
+
+    .envelope{
+        filter: invert(1);
+    }
 </style>
-<?php if(!empty($messages)):?>
+
     <div class="users">
         <div class="cardHeader">
-            <h2><span><?= count($messages)?></span> message(s) au total</h2>
+            <h2><span><?= !empty($messages) ? count($messages):"0"?></span> message(s) au total</h2>
         </div>
         <table>
             <thead>
 
                 <tr>
+                    <td></td>
                     <td>Nom</td>
                     <td>Contact</td>
                     <td>Message</td>
                     <td>Recu le</td>
+                    <td colspan="2">Action</td>
+                    
                 </tr>
 
             </thead>
 
             <tbody>
 
-            
+            <?php if(!empty($messages)):?>
                 <?php foreach($messages as $message):?>
                 <tr>
+                <?php if($message['lu'] == 0):?>
+                        <td><img src="<?= IMG_PATHS.'envelope.png'?>" alt="message_envelope" class="envelope"></td>
+                        <?php else:?>
+                            <td><img src="<?= IMG_PATHS.'open_envelope.png'?>" alt="message_envelope" class="envelope"></td>
+                        <?php endif;?>
                     <td><?= ucfirst($message['nom']);?></td>
                     <td><?=($message['contact']);?></td>
                     <td><?= $message['message'];?></td>
                     <td><?= $message['date'];?></td>
+                    <td class="action"><a href="/immoavril/admin/messages/<?= $message['id']; ?>" class="edit">voir</a><a href="/immoavril/admin/message/delete/<?= $message['id']; ?>" class="delete">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
-
+                <?php endif;?>
             </tbody>
         </table>
     </div>
-<?php endif;?>
+
 <?php
 $content = ob_get_clean();
 require 'template.php';

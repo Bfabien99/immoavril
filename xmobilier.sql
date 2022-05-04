@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost
--- Généré le : sam. 30 avr. 2022 à 16:26
--- Version du serveur : 10.4.21-MariaDB
--- Version de PHP : 7.4.28
+-- Host: 127.0.0.1
+-- Generation Time: May 04, 2022 at 06:35 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `xmobilier`
+-- Database: `xmobilier`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -38,7 +38,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`admin_id`, `ad_nom`, `ad_pseudo`, `ad_contact`, `ad_email`, `ad_password`, `ad_created`) VALUES
@@ -47,7 +47,23 @@ INSERT INTO `admin` (`admin_id`, `ad_nom`, `ad_pseudo`, `ad_contact`, `ad_email`
 -- --------------------------------------------------------
 
 --
--- Structure de la table `customers`
+-- Table structure for table `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `contact` varchar(20) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `message` text NOT NULL,
+  `date` datetime DEFAULT current_timestamp(),
+  `lu` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
 --
 
 CREATE TABLE `customers` (
@@ -62,17 +78,28 @@ CREATE TABLE `customers` (
   `cust_created` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Déchargement des données de la table `customers`
+-- Table structure for table `messages`
 --
 
-INSERT INTO `customers` (`cust_id`, `cust_nom`, `cust_prenoms`, `cust_pseudo`, `cust_contact`, `cust_email`, `cust_password`, `cust_photo`, `cust_created`) VALUES
-(1, 'brou', 'k', 'fabie', '01521488', 'fabienbrou99@gmail.com', '8082b382bea4c85367617e7271768276', '$2y$10$ereemEkQdNtARgMkKYOg5jTia2Wlp593RhGItauPuCYlqSD.2Gpexels-jack-winbow-1559486.jpg', '2022-04-28 17:51:28');
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `contact` varchar(20) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `message` text DEFAULT 'JE SUIS INTERRESER PAR CETTE PROPRIETE',
+  `propriete_id` int(11) NOT NULL,
+  `proprio_email` varchar(100) DEFAULT NULL,
+  `date` datetime DEFAULT current_timestamp(),
+  `lu` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `proprietes`
+-- Table structure for table `proprietes`
 --
 
 CREATE TABLE `proprietes` (
@@ -98,67 +125,92 @@ CREATE TABLE `proprietes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Déchargement des données de la table `proprietes`
---
-
-INSERT INTO `proprietes` (`prop_id`, `titre`, `nb_piece`, `nb_chambre`, `nb_douche`, `nb_wc`, `addresse`, `superficie`, `type`, `prix`, `Description`, `image`, `nom_proprio`, `contact_proprio`, `email_proprio`, `customer_id`, `vue`, `prop_created`, `enable`) VALUES
-(5, 'natus alias quis totam et cum.', 3, 2, 3, 4, 'aéroport félix houphouët boigny, abidjan, côte d\'ivoire', 127, 'vendre', 634, 'zczc', '$2y$10$gIdiCkuzwnO1kXNamK0TH.SI14WdcKRRI9UqQyquXt7tiDEDZdFKpexels-chloe-1043471.jpg', 'sonny heller', '0297488435', 'your.email+fakedata67496@gmail.com', NULL, 1, '2022-04-30 10:24:17', 1),
-(6, 'laborum eaque reprehenderit est sed', 441, 593, 386, 421, '975 hartmann corners', 597, 'location', 195, 'hic qui cumque non et vitae voluptas. nemo eius saepe omnis. provident eaque a sequi architecto exercitationem illo molestiae. provident eum eius eveniet ab dignissimos dolores.', '$2y$10$PBANXAJVCm.sR9XCo58lORf.L5miUE34yLSmI9YeMXb0qQhgUSlapexels-photomix-company-101808.jpg', 'eileen prosacco', '2896064000', 'your.email+fakedata97405@gmail.com', NULL, 0, '2022-04-30 10:27:16', 0);
-
---
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`admin_id`);
 
 --
--- Index pour la table `customers`
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `customers`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`cust_id`),
   ADD UNIQUE KEY `cust_pseudo` (`cust_pseudo`),
-  ADD UNIQUE KEY `cust_email` (`cust_email`);
+  ADD UNIQUE KEY `cust_email` (`cust_email`),
+  ADD KEY `cust_email_2` (`cust_email`);
 
 --
--- Index pour la table `proprietes`
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `propriete_id` (`propriete_id`),
+  ADD KEY `messages_ibfk_2` (`proprio_email`);
+
+--
+-- Indexes for table `proprietes`
 --
 ALTER TABLE `proprietes`
   ADD PRIMARY KEY (`prop_id`),
-  ADD UNIQUE KEY `addresse` (`addresse`),
-  ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `addresse_2` (`addresse`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `customers`
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `proprietes`
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `proprietes`
 --
 ALTER TABLE `proprietes`
-  MODIFY `prop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `prop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `proprietes`
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`propriete_id`) REFERENCES `proprietes` (`prop_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `proprietes`
 --
 ALTER TABLE `proprietes`
   ADD CONSTRAINT `proprietes_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`cust_id`) ON DELETE CASCADE ON UPDATE CASCADE;

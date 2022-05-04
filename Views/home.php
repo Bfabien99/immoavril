@@ -34,10 +34,12 @@ ob_start();
         <?php endforeach;?>
 
     </div>
+    <?php else:?>
+        <h3>Désolé, nous n'avons trouvé aucun résultat</h3>
     <?php endif;?>
     <?php if($title == "Accueil"):?>
         <a href="" id="loadmore">Charger plus</a>
-        <?php endif;?>
+    <?php endif;?>
     <script>
         $(document).ready(function()
         {

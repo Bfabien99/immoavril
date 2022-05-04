@@ -11,12 +11,14 @@
     /* ------------- HOME ROUTES ------------------*/
     /* GET */
     $router->map('GET', '/immoavril/',function(){
+        session_unset();
         $adminClass = new Admin();
         $properties = $adminClass->getActiveProperty();//Les propriétés activées
+        $title = "Accueil";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchProperty(strip_tags($_GET['search']));
+            $title = "Search";
         }
-        $title = "Accueil";
         require 'views/home.php';
     });
 
@@ -31,10 +33,11 @@
     $router->map('GET', '/immoavril/a_louer',function(){
         $adminClass = new Admin();
         $properties = $adminClass->getLocationProperty();//Les propriétés en location
+        $title = "En location";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'location');
+            $title = "Search";
         }
-        $title = "En location";
         require 'views/home.php';
     });
 
@@ -44,6 +47,7 @@
         $title = "En vente";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'vendre');
+            $title = "Search";
         }
         require 'views/home.php';
     });
@@ -63,7 +67,11 @@
     /* ------------- ADMIN ROUTES ------------------*/
     /* GET */
     $router->map('GET', '/immoavril/admin',function()
-    {
+    {   
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();//Les utilisateurs
@@ -75,7 +83,11 @@
     });
 
     $router->map('GET', '/immoavril/admin/propriete',function()
-    {
+    {   
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
@@ -87,6 +99,10 @@
 
     $router->map('GET', '/immoavril/admin/propriete/activate/[*:id]',function($id)
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $property = $adminClass->activateProperty($id);//Toutes les propriétés
         header('location: /immoavril/admin/propriete/edit/'.$id);
@@ -94,22 +110,38 @@
 
     $router->map('GET', '/immoavril/admin/propriete/desactivate/[*:id]',function($id)
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $property = $adminClass->desactivateProperty($id);//Toutes les propriétés
         header("location:/immoavril/admin/propriete/edit/$id");
     });
 
     $router->map('GET', '/immoavril/admin/propriete/add',function(){
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         require 'views/admin/add.php';
     });
 
     $router->map('GET', '/immoavril/admin/propriete/edit/[*:id]',function($id){
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
         require 'views/admin/edit.php';
     });//TERMINER
 
     $router->map('GET', '/immoavril/admin/propriete/delete/[*:id]',function($id){
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $delete = $adminClass->deleteProperty($id);
         if($delete)
@@ -124,6 +156,10 @@
 
     $router->map('GET', '/immoavril/admin/utilisateur',function()
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();
@@ -135,22 +171,68 @@
 
     $router->map('GET', '/immoavril/admin/messages',function()
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $messages = $adminClass->getAllMessage();
         require 'views/admin/messages.php';
     });
 
+    $router->map('GET', '/immoavril/admin/messages/[*:id]',function($id)
+    {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
+        $adminClass = new Admin();
+        $getMessage = $adminClass->getMessagebyId($id);
+        if($getMessage){
+            Admin::lu_2($id);
+        }
+        require 'views/admin/readmessage.php';
+    });
+
+    $router->map('GET', '/immoavril/admin/message/delete/[*:id]',function($id)
+    {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
+        $adminClass = new Admin();
+        $getMessage = $adminClass->deleteMessagebyId($id);
+        if($getMessage){
+            header('Location:/immoavril/admin/messages');
+        }
+        require 'views/admin/readmessage.php';
+    });
+
     $router->map('GET', '/immoavril/admin/interest',function()
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $messages = $adminClass->getMessages();
         $customers = $adminClass->getAllCustomer();
-        foreach($customers as $customer){
-            foreach($messages as $message){
-                if($customer['cust_email'] != $message['proprio_email']){
-                    $interests [] = $message;
+
+        if(!empty($messages) && !empty($customers))
+        {
+            foreach($customers as $customer)
+            {
+                foreach($messages as $message){
+                    if($customer['cust_email'] != $message['proprio_email']){
+                        $interests [] = $message;
+                    }
                 }
+            }
+        }
+        elseif(!empty($messages)){
+            foreach($messages as $message){
+                $interests [] = $message;
             }
         }
         require 'views/admin/interest.php';
@@ -158,14 +240,42 @@
 
     $router->map('GET', '/immoavril/admin/interest/[*:id]',function($id)
     {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $customerClass= new Customers();
         $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         $message = $customerClass->getMessagebyId($id);
+        if($message){Admin::lu($id);}
+        require 'views/admin/read.php';
+    });
+
+    $router->map('GET', '/immoavril/admin/interests/delete/[*:id]',function($id)
+    {
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
+        $admin= new Admin();
+        $interest = $admin->getInterestbyId($id);
+        $customer = $admin->getCustomerbyEmail($interest['proprio_email']);
+        if(empty($customer)){
+            $delete = $admin->deleteInterest($interest['proprio_email']);
+        }
+        
+        if($delete){
+            header('location:/immoavril/admin/interest');
+        }
         require 'views/admin/read.php';
     });
 
 
     $router->map('GET', '/immoavril/admin/utilisateur/delete/[*:id]',function($id){
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $delete = $adminClass->deleteCustomer($id);
         if($delete)
@@ -179,6 +289,10 @@
     });
 
     $router->map('GET', '/immoavril/admin/parametre',function(){
+        if(!isset($_SESSION['xadmin_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass= new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         require 'views/admin/parametre.php';
@@ -360,30 +474,34 @@
     {
         $adminClass = new Admin();
         $properties = $adminClass->getActiveProperty();//Les propriétés activées
+        $title = "Accueil";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchProperty(strip_tags($_GET['search']));
+            $title = "Search";
         }
-        $title = "Accueil";
         require 'views/customers/home.php';
     });//TERMINER
 
     $router->map('GET', '/immoavril/customer/a_louer',function(){
         $adminClass = new Admin();
         $properties = $adminClass->getLocationProperty();//Les propriétés en location
+        $title = "En location";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'location');
+            $title = "Search";
         }
-        $title = "En location";
+        
         require 'views/customers/home.php';
     });//TERMINER
 
     $router->map('GET', '/immoavril/customer/en_vente',function(){
         $adminClass = new Admin();
         $properties = $adminClass->getBuyProperty();//Les propriétés en vente
+        $title = "En vente";
         if(!empty($_GET['search'])){
             $properties = $adminClass->searchPropertyType(strip_tags($_GET['search']),'vendre');
+            $title = "Search";
         }
-        $title = "En vente";
         require 'views/customers/home.php';
     });//TERMINER
 
@@ -403,11 +521,19 @@
 
     $router->map('GET', '/immoavril/customer/compte',function()
     {
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         header('Location: /immoavril/customer/compte/propriete');
     });
 
     $router->map('GET', '/immoavril/customer/compte/messages',function()
     {
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $customerClass= new Customers();
         $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         $messages = $customerClass->getMessages($customer['cust_email']);
@@ -416,13 +542,33 @@
 
     $router->map('GET', '/immoavril/customer/compte/messages/[*:id]',function($id)
     {
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $customerClass= new Customers();
         $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         $message = $customerClass->getMessagebyId($id);
         if($message['proprio_email'] !== $customer['cust_email']){
             header('location:/immoavril/customer/compte/messages');
         }
+        if($message){Admin::lu($id);}
         require 'views/customers/readmessage.php';
+    });
+
+    $router->map('GET', '/immoavril/customer/compte/message/delete/[*:id]',function($id)
+    {
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
+        $customerClass= new Customers();
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        $message = $customerClass->deleteMessage($id,$customer['cust_email']);
+        if($message){
+            header('location:/immoavril/customer/compte/messages');
+        }
+        require 'views/customers/messages.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/profil',function()
@@ -434,28 +580,48 @@
 
     $router->map('GET', '/immoavril/customer/compte/securite',function()
     {
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $customerClass= new Customers();
         $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         require 'views/customers/securite.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/propriete',function(){
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $customerClass= new Customers();
         $properties = $customerClass->getCustomerProperties($_SESSION['xcustomer_id']);
         require 'views/customers/propriete.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/propriete/add',function(){
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         require 'views/customers/add.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/propriete/edit/[*:id]',function($id){
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
         require 'views/customers/edit.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/propriete/delete/[*:id]',function($id){
+        if(!isset($_SESSION['xcustomer_id'])){
+            header('Location:/immoavril/');
+            die('ERROR');
+        }
         $adminClass = new Admin();
         $delete = $adminClass->deleteProperty($id);
         if($delete)

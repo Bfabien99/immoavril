@@ -409,6 +409,72 @@
             }
         }
 
+        public function getMessagebyId($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM contact WHERE id = '.$id);
+            $query->execute();
+
+            $message = $query->fetch(PDO::FETCH_ASSOC);
+            if($message){
+                return $message;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function deleteMessagebyId($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('DELETE FROM contact WHERE id = '.$id);
+            $delete=$query->execute();
+
+            if($delete){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function getInterestbyId($id)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM messages WHERE id = '.$id);
+            $query->execute();
+
+            $message = $query->fetch(PDO::FETCH_ASSOC);
+            if($message){
+                return $message;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function deleteInterest($email)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('DELETE FROM messages WHERE proprio_email = '.'"'.$email.'"');
+            $delete = $query->execute();
+
+            if($delete){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
         public function getMessages(){
             $database = new CDatabase();
             $db = $database->dbconnect();
@@ -419,6 +485,36 @@
             $messages = $query->fetchAll(PDO::FETCH_ASSOC);
             if($messages){
                 return $messages;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public static function lu($id){
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE messages SET lu = 1 WHERE id = $id");
+            $lu = $query->execute();
+
+            if($lu){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public static function lu_2($id){
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE contact SET lu = 1 WHERE id = $id");
+            $lu = $query->execute();
+
+            if($lu){
+                return true;
             }
             else {
                 return false;

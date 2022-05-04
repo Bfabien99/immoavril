@@ -187,6 +187,22 @@
                 return false;
             }
         }
+
+
+        public function deleteMessage($id,$email){
+            $database = new CDatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('DELETE FROM `messages` WHERE id ='.$id.' AND proprio_email LIKE '.'"'.'%'.$email.'%'.'"');
+            $delete=$query->execute();
+
+            if($delete){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
         
 
     }
