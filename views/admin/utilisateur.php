@@ -1,12 +1,13 @@
 <?php 
 define('IMG_PATHS','\immoavril\assets\images\icon\\');
+define('PROPERTY_IMG','\immoavril\uploads\\');
 $title = 'utilisateurs';
-$search = '<div class="search">
+$search = '<form class="search" method="get" action="">
 <label for="search">
     <input type="search" name="search" id="search" placeholder="Search..." autocomplete="off">
     <img src="'.IMG_PATHS.'search.png'.'" alt="search" class="search_icon">
 </label>
-</div>';
+</form>';
 ob_start();
 ?>
 <style>
@@ -60,6 +61,20 @@ ob_start();
     .delete{
         background: red;
     }
+
+    .imgBox{
+        width: 60px;
+        overflow: hidden;
+        height: 60px;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+
+    .userImg{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+    }
 </style>
 <?php if(!empty($customers)):?>
     <div class="users">
@@ -87,7 +102,7 @@ ob_start();
                 <tr>
                     <td width="60px">
                         <div class="imgBox">
-                        <img src="<?= IMG_PATHS.'user.png'; ?>" alt="user">
+                        <img src="<?= PROPERTY_IMG.$customer['cust_photo'] ?>" alt="user" class="userImg">
                         </div>
                     </td>
                     <td><?= ucfirst($customer['cust_nom']);?></td>

@@ -90,4 +90,36 @@
 
     }
 </script>
+<script>
+        $(document).ready(function()
+    {
+
+        $('#contactForm').on('submit',function(e){
+            e.preventDefault();
+            var nom = $('#nom').val();
+            var tel = $('#tel').val();
+            var email = $('#email').val();
+            var message = $('#message').val();
+
+            $.ajax({
+                url: '/immoavril/ajax_validation/send_message.php',
+                type: 'POST',
+                data: {nom: nom, tel: tel, email: email, message: message},
+                success: function(data)
+                {
+                    if(data == "OK"){
+                        $('#msg').html("<p class='success'>Messages envoyé</p>")
+                        $('#contactForm')[0].reset();
+                    }
+                    else{
+                        $('#msg').html(data);
+                    }
+                    
+                }
+            });
+
+        });
+
+    });
+    </script>
 </html>

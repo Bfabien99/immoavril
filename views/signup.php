@@ -148,7 +148,7 @@
                 {
                     if(data == "OK"){
                         $('#msg').html("<p class='success'>Enregistrement effectué... Connectez-vous!</p>")
-                        $('#form').reset();
+                        $('#form')[0].reset();
                     }
                     else{
                         $('#msg').html(data);

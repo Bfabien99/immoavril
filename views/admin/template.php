@@ -344,29 +344,27 @@
 
         .recentCustomers{
             position:relative;
-            display: grid;
-            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            min-height: 150px;
             padding: 20px;
             background: var(--white);
             box-shadow:0 7px 25px rgba(0,0,0,0.08);
             border-radius:20px;
         }
 
-        .recentCustomers .imgBox{
-            position:relative;
-            width: 40px;
-            height: 40px;
-            border-radius:50%;
-            overflow: hidden;
+        .imgBox{
+        width: 60px;
+        overflow: hidden;
+        height: 60px;
+        border-radius: 50%;
+        margin: 0 auto;
         }
 
-        .recentCustomers .imgBox img{
-            position: absolute;
-            top: 0;
-            left: 0;
+        .userImg{
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit:cover;
         }
 
         .recentCustomers table tr:hover{
@@ -497,7 +495,21 @@
                 <li>
                     <a href="/immoavril/admin/utilisateur">
                         <img src="<?= IMG_PATH.'customer.png'; ?>" alt="customer" class="icon">
-                        <span class="title">utilisateurs</span>
+                        <span class="title">Utilisateurs</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/immoavril/admin/messages">
+                        <img src="<?= IMG_PATH.'letter.png'; ?>" alt="customer" class="icon">
+                        <span class="title">Messages</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/immoavril/admin/interest">
+                        <img src="<?= IMG_PATH.'Us.png'; ?>" alt="customer" class="icon">
+                        <span class="title">Interest</span>
                     </a>
                 </li>
 

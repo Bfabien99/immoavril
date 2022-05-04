@@ -1,8 +1,12 @@
 <?php
 define('IMG_PATHS','\immoavril\assets\images\icon\\');
+define('PROPERTY_IMG','\immoavril\uploads\\');
 $title = 'home';
 ob_start();
 ?>
+<style>
+    
+</style>
 <!-- cards -->
 <div class="cardBox">
 
@@ -27,7 +31,7 @@ ob_start();
         </div>
 
         <div class="iconBox">
-            <img src="<?= IMG_PATHS.'city.png'; ?>" alt="">
+            <img src="<?= IMG_PATHS.'align.png'; ?>" alt="">
         </div>
 
     </div>
@@ -35,12 +39,12 @@ ob_start();
     <div class="card">
 
         <div>
-            <div class="numbers">0</div>
-            <div class="cardName">Reservations</div>
+            <div class="numbers"><?= (!empty($messages)) ? count($messages):0; ?></div>
+            <div class="cardName">Messages</div>
         </div>
 
         <div class="iconBox">
-            <img src="<?= IMG_PATHS.'city.png'; ?>" alt="">
+            <img src="<?= IMG_PATHS.'letter.png'; ?>" alt="">
         </div>
 
     </div>
@@ -53,7 +57,7 @@ ob_start();
         </div>
 
         <div class="iconBox">
-            <img src="<?= IMG_PATHS.'city.png'; ?>" alt="">
+            <img src="<?= IMG_PATHS.'inspection.png'; ?>" alt="">
         </div>
 
     </div>
@@ -67,7 +71,7 @@ ob_start();
 
         <div class="cardHeader">
             <h2>Recent Property</h2>
-            <a href="propriete" class="btn">View All</a>
+            <a href="admin/propriete" class="btn">View All</a>
         </div>
 
         <table>
@@ -75,7 +79,7 @@ ob_start();
 
                 <tr>
                     <td>Titre</td>
-                    <td>prix</td>
+                    <td>prix (Fcfa)</td>
                     <td>Proprio</td>
                     <td>Contact</td>
                     <td>Vue</td>
@@ -88,7 +92,7 @@ ob_start();
                 <?php foreach($properties as $property):?>
                 <tr>
                     <td><?= $property['titre']?></td>
-                    <td><?= $property['titre']?></td>
+                    <td><?= number_format($property['prix'], 2, '.', ',')?></td>
                     <td><?= $property['nom_proprio']?></td>
                     <td><?= $property['contact_proprio']?></td>
                     <td><?= $property['vue']?></td>
@@ -114,7 +118,7 @@ ob_start();
                 <tr>
                     <td width="60px">
                         <div class="imgBox">
-                        <img src="<?= IMG_PATHS.'user.png'; ?>" alt="user">
+                        <img src="<?= PROPERTY_IMG.$customer['cust_photo'] ?>" alt="user" class="userImg">
                         </div>
                     </td>
                     <td><h4><?= $customer['cust_nom']." ".$customer['cust_prenoms'];?><br> <span><?= $customer['cust_created']?></span></h4></td>

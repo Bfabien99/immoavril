@@ -50,12 +50,15 @@
 
     $router->map('GET', '/immoavril/propriete/[*:id]',function($id)
     {
+        $_SESSION['xmobilier_id'] = $id;
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
+        $customer = $adminClass->getCustomerbyEmail($property['email_proprio']);
+        
         $Increment = $adminClass->vueIncrement($id);//augmenter la vue de la propriété
+        $_SESSION['xcustomer_email'] = $property['email_proprio'];
         require 'views/voir.php';
     });
-
 
     /* ------------- ADMIN ROUTES ------------------*/
     /* GET */
@@ -65,6 +68,7 @@
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();//Les utilisateurs
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
+        $messages = $adminClass->getAllMessage();//Tous les mesages
         $active_properties = $adminClass->getActiveProperty();//Les propriétés activées
         $notactive_properties = $adminClass->getnotActiveProperty();//Les propriétés pas encores activées
         require 'views/admin/home.php';
@@ -123,8 +127,43 @@
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();
+        if (isset($_GET['search'])) {
+            $customers = $adminClass->searchCustomer($_GET['search']);
+        }
         require 'views/admin/utilisateur.php';
     });
+
+    $router->map('GET', '/immoavril/admin/messages',function()
+    {
+        $adminClass = new Admin();
+        $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
+        $messages = $adminClass->getAllMessage();
+        require 'views/admin/messages.php';
+    });
+
+    $router->map('GET', '/immoavril/admin/interest',function()
+    {
+        $adminClass = new Admin();
+        $messages = $adminClass->getMessages();
+        $customers = $adminClass->getAllCustomer();
+        foreach($customers as $customer){
+            foreach($messages as $message){
+                if($customer['cust_email'] != $message['proprio_email']){
+                    $interests [] = $message;
+                }
+            }
+        }
+        require 'views/admin/interest.php';
+    });
+
+    $router->map('GET', '/immoavril/admin/interest/[*:id]',function($id)
+    {
+        $customerClass= new Customers();
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        $message = $customerClass->getMessagebyId($id);
+        require 'views/admin/read.php';
+    });
+
 
     $router->map('GET', '/immoavril/admin/utilisateur/delete/[*:id]',function($id){
         $adminClass = new Admin();
@@ -140,6 +179,8 @@
     });
 
     $router->map('GET', '/immoavril/admin/parametre',function(){
+        $adminClass= new Admin();
+        $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         require 'views/admin/parametre.php';
     });
 
@@ -268,6 +309,50 @@
         require 'views/admin/edit.php';
     });//TERMINER
 
+    $router->map('POST','/immoavril/admin/parametre',function(){
+        $adminClass= new Admin();
+        $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
+        // echo $customer['cust_password'];
+        if(isset($_POST['submit'])){
+            if (!empty($_POST['pseudo'])) 
+            {
+                if (!empty($_POST['npassword']) && empty($_POST['cpassword'])) 
+                {
+                    $msg = "Veuillez confirmer votre mot de passe";
+                }
+                elseif((!empty($_POST['npassword']) || !empty($_POST['cpassword'])) && $_POST['npassword'] == $_POST['cpassword'])
+                {    
+                    $update=$adminClass->updateAdmin($_SESSION['xadmin_id'],$_POST['pseudo'],encryptpass($_POST['npassword']));
+
+                    if ($update) 
+                    {
+                        $msg = "Modification effectuée";
+                        header('Location: /immoavril/admin/parametre');
+                    }
+                    else
+                    {
+                        $msg = "Non enregistré";
+                    }
+                }
+                else{
+                    $update=$adminClass->updateAdmin($_SESSION['xadmin_id'],$_POST['pseudo'], $admin['ad_password']);
+
+                    if ($update) {
+                        $msg = "Modification effectuée";
+                        header('Location: /immoavril/admin/parametre');
+                    }
+                    else{
+                        $msg = "Non enregistré";
+                    }
+                }
+            }
+            else{
+                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+            }
+        }
+        require 'views/admin/parametre.php';
+    });
+
 
     /* ------------- CUSTOMERS ROUTES ------------------*/
     /* GET */
@@ -302,22 +387,42 @@
         require 'views/customers/home.php';
     });//TERMINER
 
+
     $router->map('GET', '/immoavril/customer/propriete_consulter/[*:id]',function($id)
     {
+        $_SESSION['xmobilier_id'] = $id;
         $adminClass = new Admin();
         $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
+        $_SESSION['xcustomer_email'] = $property['email_proprio'];
+        $customerClass= new Customers();
+        $customerPic = $adminClass->getCustomerbyEmail($property['email_proprio']);
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         require 'views/customers/voir.php';
     });//TERMINER
 
 
     $router->map('GET', '/immoavril/customer/compte',function()
     {
-        require 'views/customers/dashboard.php';
+        header('Location: /immoavril/customer/compte/propriete');
     });
 
     $router->map('GET', '/immoavril/customer/compte/messages',function()
     {
+        $customerClass= new Customers();
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        $messages = $customerClass->getMessages($customer['cust_email']);
         require 'views/customers/messages.php';
+    });
+
+    $router->map('GET', '/immoavril/customer/compte/messages/[*:id]',function($id)
+    {
+        $customerClass= new Customers();
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        $message = $customerClass->getMessagebyId($id);
+        if($message['proprio_email'] !== $customer['cust_email']){
+            header('location:/immoavril/customer/compte/messages');
+        }
+        require 'views/customers/readmessage.php';
     });
 
     $router->map('GET', '/immoavril/customer/compte/profil',function()
@@ -335,6 +440,8 @@
     });
 
     $router->map('GET', '/immoavril/customer/compte/propriete',function(){
+        $customerClass= new Customers();
+        $properties = $customerClass->getCustomerProperties($_SESSION['xcustomer_id']);
         require 'views/customers/propriete.php';
     });
 
@@ -342,16 +449,23 @@
         require 'views/customers/add.php';
     });
 
-    $router->map('GET', '/immoavril/customer/compte/propriete/edit/id',function(){
+    $router->map('GET', '/immoavril/customer/compte/propriete/edit/[*:id]',function($id){
+        $adminClass = new Admin();
+        $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
         require 'views/customers/edit.php';
     });
 
-    $router->map('GET', '/immoavril/customer/compte/propriete/delete/id',function(){
-   
-    });
-
-    $router->map('GET', '/immoavril/customer/compte/parametre',function(){
-        require 'views/customers/parametre.php';
+    $router->map('GET', '/immoavril/customer/compte/propriete/delete/[*:id]',function($id){
+        $adminClass = new Admin();
+        $delete = $adminClass->deleteProperty($id);
+        if($delete)
+        {
+            header('Location: /immoavril/customer/compte/propriete');
+        }
+        else
+        {
+            echo "Erreur lors de la suppression de la propriété";
+        }
     });
 
 
@@ -467,6 +581,127 @@
             }
         }
         require 'views/customers/securite.php';
+    });
+
+    $router->map('POST', '/immoavril/customer/compte/propriete/add',function(){
+        $msg="";
+        $customerClass = new Customers();
+        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        if(isset($_POST['submit']))
+        {
+            if(!empty($_POST['titre']) && !empty($_POST['nombre_piece']) && !empty($_POST['nombre_chambre']) && !empty($_POST['nombre_douche']) && !empty($_POST['nombre_wc']) && !empty($_POST['addresse']) && !empty($_POST['superficie']) && !empty($_POST['type']) && !empty($_POST['prix']) && !empty($_POST['description']))
+            {
+
+                if(isset($_FILES['image']) && $_FILES['image']['error'] == 0){
+                    //Verifie la taille de l'image
+                    if($_FILES['image']['size'] <= 4000000){
+                        $fileInfo = pathinfo($_FILES['image']['name']);
+                        $extension = $fileInfo['extension'];
+                        $allowedExtensions = array('jpg', 'jpeg', 'png');
+    
+                        //Verifie si l'extension est valide
+                        if(in_array($extension, $allowedExtensions)){
+                            //On stocke le fichier
+                            $image = str_replace("/","",password_hash(rand(1,9999999), PASSWORD_DEFAULT) . basename($_FILES['image']['name']));
+                            
+                            $insertProperty=$customerClass->insertCustProperty($_SESSION['xcustomer_id'],inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, $customer['cust_nom']." ".$customer['cust_prenoms'],  $customer['cust_contact'],  $customer['cust_email']);
+    
+                            if($insertProperty){
+                                $msg = "Enregistré";
+                                move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
+                                $_POST['titre'] = $_POST['nombre_piece'] = $_POST['nombre_chambre'] = $_POST['nombre_douche'] = $_POST['nombre_wc'] = $_POST['addresse'] = $_POST['superficie'] = $_POST['type'] = $_POST['prix'] = $_POST['description'] = "";
+    
+                            }
+                            else{
+                               $msg = "Non enregistré";
+                            }
+                            
+    
+                        }
+                        else {
+                           $msg = "Format non valide";
+                        }
+    
+                    }
+                    else {
+                       $msg = "image trop volumineuse";
+                    }
+                }
+                else {
+                   $msg = "erreur d'image";
+                }
+
+            }
+            else{
+                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+            }
+        }
+        require 'views/customers/add.php';
+    });
+
+    $router->map('POST', '/immoavril/customer/compte/propriete/edit/[*:id]',function($id){
+        $adminClass = new Admin();
+        $property = $adminClass->getPropertybyId($id);//Cibler la propriété par son id
+        $msg="";
+        $customerClass = new Customers();
+        if(isset($_POST['submit']))
+        {
+            if(!empty($_POST['titre']) && !empty($_POST['nombre_piece']) && !empty($_POST['nombre_chambre']) && !empty($_POST['nombre_douche']) && !empty($_POST['nombre_wc']) && !empty($_POST['addresse']) && !empty($_POST['superficie']) && !empty($_POST['type']) && !empty($_POST['prix']) && !empty($_POST['description']))
+            {   
+
+                if(isset($_FILES['image']) && $_FILES['image']['error'] == 0)
+                {
+                    //Verifie la taille de l'image
+                    if($_FILES['image']['size'] <= 4000000){
+                        $fileInfo = pathinfo($_FILES['image']['name']);
+                        $extension = $fileInfo['extension'];
+                        $allowedExtensions = array('jpg', 'jpeg', 'png');
+    
+                        //Verifie si l'extension est valide
+                        if(in_array($extension, $allowedExtensions)){
+                            //On stocke le fichier
+                            $image = str_replace("/","",password_hash(rand(1,9999999), PASSWORD_DEFAULT) . basename($_FILES['image']['name']));
+                            
+                            
+                            $update=$customerClass->updateCustProperty($id,inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image);
+    
+                            if($update){
+                                $msg = "Modification effectuée";
+                                move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
+                            }
+                            else{
+                               $msg = "Non enregistré";
+                            }
+                            
+    
+                        }
+                        else {
+                           $msg = "Format non valide";
+                        }
+    
+                    }
+                    else {
+                       $msg = "image trop volumineuse";
+                    }
+                }
+                else 
+                {
+                    $update=$customerClass->updateCustProperty($id,inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $property['image']);
+    
+                    if($update){
+                        $msg = "Modification effectuée";
+                    }
+                    else{
+                       $msg = "Non enregistré";
+                    }
+                }
+
+            }
+            else{
+                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+            }
+        }
+        require 'views/customers/edit.php';
     });
 
     $match = $router->match();

@@ -1,4 +1,7 @@
-<?php define('PROPERTY_IMG','\immoavril\uploads\\');?>
+<?php 
+include 'session.php';
+define('PROPERTY_IMG','\immoavril\uploads\\');
+?>
 <style>
     header{
         position: sticky;
@@ -24,7 +27,6 @@
 <header>
     <img src="" alt="">
     <ul class="navigation">
-        <li><a href="/immoavril/customer/compte">Accueil</a></li>
         <li><a href="/immoavril/customer/compte/propriete">Propriétés</a></li>
         <li><a href="/immoavril/customer/compte/messages">Messages</a></li>
         <li><a href="/immoavril/customer/compte/profil">Profil</a></li>

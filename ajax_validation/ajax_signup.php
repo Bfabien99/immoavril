@@ -3,7 +3,7 @@
     require '../functions/encryptpass.php';
     require '../functions/inputClean.php';
 
-    if(!empty($_POST['nom']) && !empty($_POST['prenoms']) && !empty($_POST['pseudo']) && !empty($_POST['contact']) && !empty($_POST['password']))
+    if(!empty($_POST['nom']) && !empty($_POST['prenoms']) && !empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['contact']) && !empty($_POST['password']))
     {
         $nom = $_POST['nom'];
         $prenoms = $_POST['prenoms'];

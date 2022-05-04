@@ -10,9 +10,27 @@
             $query = $db->prepare("SELECT * FROM admin WHERE admin_id = $id");
             $query->execute();
 
-            $customer = $query->fetch(PDO::FETCH_ASSOC);
-            if($customer){
-                return $customer;
+            $admin = $query->fetch(PDO::FETCH_ASSOC);
+            if($admin){
+                return $admin;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function updateAdmin($id,$pseudo,$password){
+            $database = new CDatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare("UPDATE admin SET ad_pseudo=:pseudo, ad_password=:password WHERE admin_id = $id");
+            $update=$query->execute([
+                "pseudo" => $pseudo,
+                "password" => $password
+            ]);
+
+            if($update){
+                return true;
             }
             else {
                 return false;
@@ -73,6 +91,41 @@
             }
         }
 
+        public function getCustomerbyEmail($email)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM customers WHERE cust_email LIKE '.'"'.'%'.$email.'%'.'"');
+            $query->execute();
+
+            $customer = $query->fetch(PDO::FETCH_ASSOC);
+            if($customer){
+                return $customer;
+            }
+            else {
+                return false;
+            }
+        }
+
+
+        public function searchCustomer($search)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM customers WHERE cust_nom LIKE '.'"'.'%'.$search.'%'.'"'.' OR cust_prenoms LIKE '.'"'.'%'.$search.'%'.'"');
+            $query->execute();
+
+            $customer = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($customer){
+                return $customer;
+            }
+            else {
+                return false;
+            }
+        }
+
         public function insertProperty($titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom_proprio, $email_proprio, $contact_proprio)
         {
             $database = new ADatabase();
@@ -106,12 +159,12 @@
 
         }
 
-        public function updateProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom_proprio, $email_proprio, $contact_proprio)
+        public function updateProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image)
         {
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare("UPDATE proprietes SET titre=:titre, nb_piece=:nb_piece,	nb_chambre=:nb_chambre,	nb_douche=:nb_douche,	nb_wc=:nb_wc, addresse=:addresse, superficie=:superficie, type=:type, prix=:prix, Description=:Description, image=:image, nom_proprio=:nom_proprio, email_proprio=:email_proprio, contact_proprio=:contact_proprio WHERE prop_id =:id");
+            $query = $db->prepare("UPDATE proprietes SET titre=:titre, nb_piece=:nb_piece,	nb_chambre=:nb_chambre,	nb_douche=:nb_douche,	nb_wc=:nb_wc, addresse=:addresse, superficie=:superficie, type=:type, prix=:prix, Description=:Description, image=:image WHERE prop_id =:id");
             $insert = $query->execute([
                 "id" => $id,
                 "titre" => $titre,
@@ -125,9 +178,6 @@
                 "prix" => $prix,
                 "Description" => $Description,
                 "image" => $image,
-                "nom_proprio" => $nom_proprio,
-                "contact_proprio" => $contact_proprio,
-                "email_proprio" => $email_proprio,
             ]);
 
             if($insert){
@@ -211,7 +261,7 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1');
+            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 LIMIT 3');
             $query->execute();
 
             $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -296,7 +346,7 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"');
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse LIKE '.'"'.'%'.$search.'%'.'"'.' OR prix <=  '.'"'.$search.'"'.' AND enable = 1');
             $query->execute();
 
             $property = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -313,7 +363,7 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"'.' AND type = '.'"'.$type.'"');
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"'.' AND type = '.'"'.$type.'"'.' AND enable = 1');
             $query->execute();
 
             $property = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -335,6 +385,40 @@
 
             if($property){
                 return $property;
+            }
+            else {
+                return false;
+            }
+        }
+
+
+        public function getAllMessage()
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM contact ORDER BY date DESC');
+            $query->execute();
+
+            $message = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($message){
+                return $message;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function getMessages(){
+            $database = new CDatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM messages');
+            $query->execute();
+
+            $messages = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($messages){
+                return $messages;
             }
             else {
                 return false;

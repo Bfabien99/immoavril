@@ -23,12 +23,11 @@ ob_start();
     <img src="<?= PROPERTY_IMG. $property['image']?>" alt="">
     </div>
     <div class="userBlock">
-        <img src="<?= IMG_PATH.'userA.jpg'?>" alt="">
+        <img src="<?= !(empty($customerPic)) ? PROPERTY_IMG.$customerPic['cust_photo']:IMG_PATH.'userA.jpg'; ?>" alt="" width="90px" height="90px">
         <div class="userInfo">
-            <h2 class="nom">Brou fabien</h2>
-            <h3 class="tel">010000000</h3>
-            <h4 class="email">email@gmail.ci</h4>
-            <span>Abobo</span>
+            <h2 class="nom">Propriétaire : <?= $property['nom_proprio']?></h2>
+            <h3 class="tel">Contact : <?= $property['contact_proprio']?></h3>
+            <h4 class="email">Email : <?= !empty($property['email_proprio'])? $property['email_proprio']:""?></h4>
         </div>
     </div>
 
@@ -42,7 +41,7 @@ ob_start();
                     <h4>Douche: <span><?= $property['nb_douche']; ?></span> </h4>
                     <h4>Superficie: <span><?= $property['superficie']; ?></span> </h4>
                     <h4>Type: <span><?= $property['type']; ?></span> </h4>
-                    <h4>Localisation: <span><?= $property['addresse']; ?>Abobo pk18</span> </h4>
+                    <h4>Localisation: <span><?= $property['addresse']; ?></span> </h4>
                     <h4>vues: <span><?= $property['vue']; ?></span> </h4>
                 </div>
             </div>
@@ -56,21 +55,22 @@ ob_start();
 
             </div>
 
-        <form action="" method="post" id="contactForm">
+        <?php if($property['email_proprio'] !== $customer['cust_email']):?>
+        <form action="" method="post" id="messageForm">
             <h2>Contacter l' annonceur</h2>
             <div class="group">
                 <label for="">Nom et prénoms *</label>
-                <input type="text" name="nom" id="nom" required>
+                <input type="text" name="nom" id="nom" value="<?= $customer['cust_nom']." ".$customer['cust_prenoms'];?>" required>
             </div>
 
             <div class="group">
                 <label for="">Contact *</label>
-                <input type="tel" name="tel" id="tel" required>
+                <input type="tel" name="tel" id="tel" value="<?= $customer['cust_contact'];?>" required>
             </div>
 
             <div class="group">
                 <label for="">Email</label>
-                <input type="email" name="email" id="email">
+                <input type="email" name="email" id="email" value="<?= $customer['cust_email'];?>">
             </div>
 
             <div class="group">
@@ -81,7 +81,8 @@ ob_start();
             <input type="submit" value="Envoyer">
             <div id="msg"></div>
         </form>
-        <a href="/immoavril" class="back">Retour</a>
+        <?php endif;?>
+        <a href="/immoavril/customer" class="back">Retour</a>
     </div>
     
 <?php
@@ -159,6 +160,38 @@ function setupMap(center){
             map.addControl(new mapboxgl.NavigationControl());
 }
 </script>
+<script>
+        $(document).ready(function()
+    {
+
+        $('#messageForm').on('submit',function(e){
+            e.preventDefault();
+            var nom = $('#nom').val();
+            var tel = $('#tel').val();
+            var email = $('#email').val();
+            var message = $('#message').val();
+
+            $.ajax({
+                url: '/immoavril/ajax_validation/send_interest.php',
+                type: 'POST',
+                data: {nom: nom, tel: tel, email: email, message: message},
+                success: function(data)
+                {
+                    if(data == "OK"){
+                        $('#msg').html("<p class='success'>Messages envoyé</p>")
+                        $('#messageForm')[0].reset();
+                    }
+                    else{
+                        $('#msg').html(data);
+                    }
+                    
+                }
+            });
+
+        });
+
+    });
+    </script>
 <?php endif;?>
 <?php
 $content = ob_get_clean();
