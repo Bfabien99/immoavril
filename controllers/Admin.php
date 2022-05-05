@@ -244,7 +244,24 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes ');
+            $query = $db->prepare('SELECT * FROM proprietes ORDER BY prop_created');
+            $query->execute();
+
+            $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($allProperties){
+                return $allProperties;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function getRecentProperty()
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes ORDER BY prop_created DESC LIMIT 5 ');
             $query->execute();
 
             $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);

@@ -6,6 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'link2.php';?>
     <title>Modifier</title>
+    <style>
+        .container{
+            align-items: center;
+        }
+
+        .cardHeader{
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cardHeader a{
+            color: #fff;
+            background-color: #222;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 6px;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            gap:1.2em;
+            box-shadow: 0px 10px 5px rgba(0, 0, 0, 0.08);
+            padding:10px;
+        }
+
+        form{
+            width: 100%;
+            max-width:700px;
+            text-align: center;
+            background-color:white;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .group{
+            display: grid;
+            grid-template-columns: auto 400px;
+            grid-gap: 10px;
+            padding:5px 10px;
+        }
+
+        .group label {
+            text-align:left;
+            font-weight: 600;
+        }
+
+        .group input{
+            height:30px;
+            padding:5px 15px;
+            outline: none;
+            border: 1Px solid #999;
+        }
+
+        .titre{
+            color:#fff;
+            background-color: #287bff;
+            padding: 10px;
+        }
+
+        input[type="submit"]{
+            width: 60%;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <?php include 'menutop.php';?>
@@ -13,8 +81,8 @@
         <?php if(!empty($property)):?>
         <div class="contentForm">
             <div class="cardHeader">
-                <h2>Modifier la propriété</h2>
-                <a href="/immoavril/admin/propriete" class="btn">Retour</a>
+                <h2 class="titre">Modifier la propriété</h2>
+                <a href="/immoavril/customer/compte/propriete" class="btn">Retour</a>
             </div>
 
             <form action="" id="myform" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -76,11 +144,10 @@
                         <input type="file" name="image" id="image">
                     </div>
 
+                    <input type="submit" value="Enregistrer" name="submit" class="back">
                     <?php if(!empty($msg)):?>
-                        <?= $msg;?>
+                            <?= $msg;?>
                     <?php endif;?>
-
-                    <input type="submit" value="Enregistrer" name="submit">
                 </div>
             </form>
         </div>
@@ -102,5 +169,16 @@
         lg.location = autocomplete.getPlace().geometry.location;
         console.log(lg.location);
     }
+</script>
+<script>
+    let msg = document.getElementById('msg');
+    let ok = document.getElementById('ok');
+
+    ok.addEventListener('click', function(e){
+        e.preventDefault();
+        msg.innerHTML = "";
+        msg.style.display = "none";
+    })
+    
 </script>
 </html>

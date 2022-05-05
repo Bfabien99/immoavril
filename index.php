@@ -30,6 +30,10 @@
         require 'views/signup.php';
     });
 
+    $router->map('GET', '/immoavril/forget',function(){
+        require 'views/forget.php';
+    });
+
     $router->map('GET', '/immoavril/a_louer',function(){
         $adminClass = new Admin();
         $properties = $adminClass->getLocationProperty();//Les propriétés en location
@@ -76,6 +80,7 @@
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();//Les utilisateurs
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
+        $recents = $adminClass->getRecentProperty();//Toutes les propriétés
         $messages = $adminClass->getAllMessage();//Tous les mesages
         $active_properties = $adminClass->getActiveProperty();//Les propriétés activées
         $notactive_properties = $adminClass->getnotActiveProperty();//Les propriétés pas encores activées
@@ -326,33 +331,33 @@
                             $Admin=$admin->insertProperty(inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, inputClean($_POST['nom_proprio']), inputClean($_POST['email_proprio']), inputClean($contact));
     
                             if($Admin){
-                                $msg = "Enregistré";
+                                $msg = "<div id='msg'><p class='success'>Enregistré</p><a href='' id='ok'>ok</a></div>";
                                 move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
                                 $_POST['titre'] = $_POST['nombre_piece'] = $_POST['nombre_chambre'] = $_POST['nombre_douche'] = $_POST['nombre_wc'] = $_POST['addresse'] = $_POST['superficie'] = $_POST['type'] = $_POST['prix'] = $_POST['description'] = $_POST['nom_proprio'] = $_POST['tel_proprio'] = $_POST['email_proprio'] = "";
     
                             }
                             else{
-                               $msg = "Non enregistré";
+                               $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                             }
                             
     
                         }
                         else {
-                           $msg = "Format non valide";
+                           $msg = "<div id='msg'><p class='error'>Format non valide</p><a href='' id='ok'>ok</a></div>";
                         }
     
                     }
                     else {
-                       $msg = "image trop volumineuse";
+                       $msg = "<div id='msg'><p class='error'>image trop volumineuse</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else {
-                   $msg = "erreur d'image";
+                   $msg = "<div id='msg'><p class='error'>erreur d'image</p><a href='' id='ok'>ok</a></div>";
                 }
 
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/admin/add.php';
@@ -387,20 +392,21 @@
                             if($Admin){
                                 $msg = "Modification effectuée";
                                 move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
+                                header('Location: /immoavril/admin/propriete/edit/'.$id);
                             }
                             else{
-                               $msg = "Non enregistré";
+                               $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                             }
                             
     
                         }
                         else {
-                           $msg = "Format non valide";
+                           $msg = "<div id='msg'><p class='error'>Format non valide</p><a href='' id='ok'>ok</a></div>";
                         }
     
                     }
                     else {
-                       $msg = "image trop volumineuse";
+                       $msg = "<div id='msg'><p class='error'>image trop volumineuse</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else 
@@ -409,15 +415,16 @@
     
                     if($Admin){
                         $msg = "Modification effectuée";
+                        header('Location: /immoavril/admin/propriete/edit/'.$id);
                     }
                     else{
-                       $msg = "Non enregistré";
+                       $msg = "Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
 
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/admin/edit.php';
@@ -432,7 +439,7 @@
             {
                 if (!empty($_POST['npassword']) && empty($_POST['cpassword'])) 
                 {
-                    $msg = "Veuillez confirmer votre mot de passe";
+                    $msg = "<div id='msg'><p class='error'>Veuillez confirmer votre mot de passe</p><a href='' id='ok'>ok</a></div>";
                 }
                 elseif((!empty($_POST['npassword']) || !empty($_POST['cpassword'])) && $_POST['npassword'] == $_POST['cpassword'])
                 {    
@@ -445,7 +452,7 @@
                     }
                     else
                     {
-                        $msg = "Non enregistré";
+                        $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else{
@@ -456,12 +463,12 @@
                         header('Location: /immoavril/admin/parametre');
                     }
                     else{
-                        $msg = "Non enregistré";
+                        $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/admin/parametre.php';
@@ -669,18 +676,18 @@
                                 header('Location: /immoavril/customer/compte/profil');
                             }
                             else{
-                               $msg = "Non enregistré";
+                               $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                             }
                             
     
                         }
                         else {
-                           $msg = "Format non valide";
+                           $msg = "<div id='msg'><p class='error'>Format non valide</p><a href='' id='ok'>ok</a></div>";
                         }
     
                     }
                     else {
-                       $msg = "image trop volumineuse";
+                       $msg = "<div id='msg'><p class='error'>image trop volumineuse</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else 
@@ -692,13 +699,13 @@
                         header('Location: /immoavril/customer/compte/profil');
                     }
                     else{
-                       $msg = "Non enregistré";
+                       $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
 
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/customers/profil.php';
@@ -714,7 +721,7 @@
             {
                 if (!empty($_POST['npassword']) && empty($_POST['cpassword'])) 
                 {
-                    $msg = "Veuillez confirmer votre mot de passe";
+                    $msg = "<div id='msg'><p class='error'>Veuillez confirmer votre mot de passe</p><a href='' id='ok'>ok</a></div>";
                 }
                 elseif((!empty($_POST['npassword']) || !empty($_POST['cpassword'])) && $_POST['npassword'] == $_POST['cpassword'])
                 {    
@@ -727,7 +734,7 @@
                     }
                     else
                     {
-                        $msg = "Non enregistré";
+                        $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else{
@@ -738,12 +745,12 @@
                         header('Location: /immoavril/customer/compte/securite');
                     }
                     else{
-                        $msg = "Non enregistré";
+                        $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/customers/securite.php';
@@ -770,36 +777,36 @@
                             //On stocke le fichier
                             $image = str_replace("/","",password_hash(rand(1,9999999), PASSWORD_DEFAULT) . basename($_FILES['image']['name']));
                             
-                            $insertProperty=$customerClass->insertCustProperty($_SESSION['xcustomer_id'],inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, $customer['cust_nom']." ".$customer['cust_prenoms'],  $customer['cust_contact'],  $customer['cust_email']);
+                            $insertProperty=$customerClass->insertCustomersProperty($_SESSION['xcustomer_id'],inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, $customer['cust_nom'],  $customer['cust_contact'],  $customer['cust_email']);
     
                             if($insertProperty){
-                                $msg = "Enregistré";
+                                $msg = "<div id='msg'><p class='success'>Enregistré</p><a href='' id='ok'>ok</a></div>";
                                 move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
                                 $_POST['titre'] = $_POST['nombre_piece'] = $_POST['nombre_chambre'] = $_POST['nombre_douche'] = $_POST['nombre_wc'] = $_POST['addresse'] = $_POST['superficie'] = $_POST['type'] = $_POST['prix'] = $_POST['description'] = "";
     
                             }
                             else{
-                               $msg = "Non enregistré";
+                               $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                             }
                             
     
                         }
                         else {
-                           $msg = "Format non valide";
+                           $msg = "<div id='msg'><p class='error'>Format non valide</p><a href='' id='ok'>ok</a></div>";
                         }
     
                     }
                     else {
-                       $msg = "image trop volumineuse";
+                       $msg = "<div id='msg'><p class='error'>image trop volumineuse</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else {
-                   $msg = "erreur d'image";
+                   $msg = "<div id='msg'><p class='error'>erreur d'image</p><a href='' id='ok'>ok</a></div>";
                 }
 
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/customers/add.php';
@@ -834,20 +841,21 @@
                             if($update){
                                 $msg = "Modification effectuée";
                                 move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $image);
+                                header('Location: /immoavril/customer/compte/propriete/edit/'.$id);
                             }
                             else{
-                               $msg = "Non enregistré";
+                               $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                             }
                             
     
                         }
                         else {
-                           $msg = "Format non valide";
+                           $msg = "<div id='msg'><p class='error'>Format non valide</p><a href='' id='ok'>ok</a></div>";
                         }
     
                     }
                     else {
-                       $msg = "image trop volumineuse";
+                       $msg = "<div id='msg'><p class='error'>image trop volumineuse, la taille ne doit pas depasser 4 mo</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
                 else 
@@ -856,15 +864,16 @@
     
                     if($update){
                         $msg = "Modification effectuée";
+                        header('Location: /immoavril/customer/compte/propriete/edit/'.$id);
                     }
                     else{
-                       $msg = "Non enregistré";
+                       $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
                     }
                 }
 
             }
             else{
-                $msg = "Veuillez remplir tous les champs suivis d'un (*)";
+                $msg = "<div id='msg'><p class='error'>Veuillez remplir tous les champs suivis d'un (*)</p><a href='' id='ok'>ok</a></div>";
             }
         }
         require 'views/customers/edit.php';

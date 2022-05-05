@@ -73,12 +73,12 @@
         }
         
 
-        public function insertCustProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image,$nom,$contact,$email)
+        public function insertCustomersProperty($id,$titre, $nb_piece, $nb_chambre, $nb_douche, $nb_wc, $addresse, $superficie, $type, $prix, $Description, $image, $nom, $contact, $email)
         {
             $database = new CDatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare("INSERT INTO proprietes (titre, nb_piece,	nb_chambre,	nb_douche,	nb_wc, addresse, superficie, type, prix, Description, image, customer_id, enable, nom_proprio, contact_proprio, email_proprio) VALUES (:titre, :nb_piece, :nb_chambre, :nb_douche, :nb_wc, :addresse, :superficie, :type, :prix, :Description, :image, :customer_id, :enable, :nom_proprio, :contact_proprio, :email_proprio)");
+            $query = $db->prepare("INSERT INTO proprietes (titre, nb_piece,	nb_chambre,	nb_douche,	nb_wc, addresse, superficie, type, prix, Description, image,  nom_proprio, contact_proprio, email_proprio, customer_id, enable) VALUES (:titre, :nb_piece, :nb_chambre, :nb_douche, :nb_wc, :addresse, :superficie, :type, :prix, :Description, :image , :nom_proprio, :contact_proprio, :email_proprio, :customer_id, :enable)");
             $insert = $query->execute([
                 "titre" => $titre,
                 "nb_piece" => $nb_piece,
@@ -113,7 +113,7 @@
             $db = $database->dbconnect();
 
             
-            $query = $db->prepare("UPDATE proprietes SET titre=:titre, nb_piece=:nb_piece,	nb_chambre=:nb_chambre,	nb_douche=:nb_douche,	nb_wc=:nb_wc, addresse=:addresse, superficie=:superficie, type=:type, prix=:prix, Description=:Description, image=:image WHERE prop_id =:id");
+            $query = $db->prepare("UPDATE proprietes SET titre=:titre, nb_piece=:nb_piece,	nb_chambre=:nb_chambre,	nb_douche=:nb_douche, nb_wc=:nb_wc, addresse=:addresse, superficie=:superficie, type=:type, prix=:prix, Description=:Description, image=:image WHERE prop_id =:id");
             $update = $query->execute([
                 "id" => $id,
                 "titre" => $titre,
@@ -143,7 +143,7 @@
             $database = new CDatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare("SELECT * FROM `proprietes`LEFT JOIN customers ON prop_id = prop_id WHERE customer_id = $id");
+            $query = $db->prepare("SELECT * FROM `proprietes` LEFT JOIN customers ON customer_id = cust_id WHERE customer_id = $id");
             $query->execute();
 
             $properties = $query->fetchAll(PDO::FETCH_ASSOC);

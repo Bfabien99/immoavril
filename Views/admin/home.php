@@ -88,8 +88,8 @@ ob_start();
             </thead>
 
             <tbody>
-            <?php if(!empty($properties)):?>
-                <?php foreach($properties as $property):?>
+            <?php if(!empty($recents)):?>
+                <?php foreach($recents as $property):?>
                 <tr>
                     <td><?= $property['titre']?></td>
                     <td><?= number_format($property['prix'], 2, '.', ',')?></td>

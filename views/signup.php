@@ -82,6 +82,22 @@
         text-decoration: underline;
         color: var(--blue);
     }
+
+    #msg{
+        width: fit-content;
+        margin: 0 auto;
+        text-align:center;
+        font-weight: 600;
+        height: fit-content;
+    }
+
+    .error{
+        color: red;
+    }
+
+    .success{
+        color: #287bff;
+    }
     </style>
 </head>
 <body>
@@ -103,12 +119,12 @@
             </div>
             <div class="group">
                 <label for="">Contact*</label>
-                <input type="text" name="tel" id="tel" required>
+                <input type="tel" name="tel" id="tel" required>
             </div>
             
             <div class="group">
-                <label for="">Email</label>
-                <input type="email" name="email" id="email">
+                <label for="">Email*</label>
+                <input type="email" name="email" id="email" required>
             </div>
             <div class="group">
                 <label for="">Mot de passe*</label>

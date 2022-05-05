@@ -20,7 +20,7 @@ ob_start();
         box-shadow:0 7px 25px rgba(0,0,0,0.08);
         border-radius:20px;
         display: grid;
-        min-height: 400px;
+        min-height: 200px;
         max-height: 600px;
         overflow: auto;
         grid-template-rows: 50px 1fr;
@@ -76,10 +76,10 @@ ob_start();
         object-fit:cover;
     }
 </style>
-<?php if(!empty($customers)):?>
+
     <div class="users">
         <div class="cardHeader">
-            <h2><span><?= count($customers)?></span> inscrit(s) au total</h2>
+            <h2><span><?= !empty($customers) ? count($customers):"0"?></span> inscrit(s) au total</h2>
         </div>
         <table>
             <thead>
@@ -97,7 +97,7 @@ ob_start();
 
             <tbody>
 
-            
+            <?php if(!empty($customers)):?>
                 <?php foreach($customers as $customer):?>
                 <tr>
                     <td width="60px">
@@ -112,11 +112,11 @@ ob_start();
                     <td class="action"><a href="/immoavril/admin/utilisateur/delete/<?= $customer['cust_id'];?>" class="delete">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
-
+                <?php endif;?>
             </tbody>
         </table>
     </div>
-<?php endif;?>
+
 <?php
 $content = ob_get_clean();
 require 'template.php';

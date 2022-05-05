@@ -76,6 +76,18 @@
         text-decoration: underline;
         color: var(--blue);
     }
+
+    #msg{
+        width: fit-content;
+        margin: 0 auto;
+        text-align:center;
+        font-weight: 600;
+        height: fit-content;
+    }
+
+    .error{
+        color: red;
+    }
     </style>
 </head>
 <body>
@@ -95,7 +107,7 @@
             <input type="submit" value="Login">
 
             <div class="text">
-            <p><a href="/immoavril/signup"> Mot de passe oublié ?</a></p>
+            <p><a href="/immoavril/forget"> Mot de passe oublié ?</a></p>
             <p>Pas de compte ? <a href="/immoavril/signup"> Créer un compte</a> </p>
             </div>
             

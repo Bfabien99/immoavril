@@ -1,8 +1,4 @@
 <?php
-
-    if(!isset($_SESSION['xadmin_id'])){
-        header('Location:/immoavril/');
-    }
     define('IMG_PATH','\immoavril\assets\images\icon\\');
 
 ?>
@@ -153,6 +149,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 10px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color:var(--white);
         }
 
         .toggle{
@@ -279,7 +279,7 @@
         .details .recentProperty{
             position: relative;
             display: grid;
-            min-height:400px;
+            min-height:200px;
             background:var(--white);
             padding:20px;
             box-shadow:0 7px 25px rgba(0,0,0,0.08);
@@ -391,6 +391,52 @@
         .recentCustomers table tr:hover td h4 span{
             color: var(--white);
         }
+
+        #msg{
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        left: 40%;
+        top: 10%;
+        width: 300px;
+        height: 100px;
+        padding: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border: 1px solid #999;
+        font-weight: 600;
+        gap: 1.2em;
+    }
+
+    .error{
+        color: red;
+    }
+
+    .success{
+        color: #287bff;
+    }
+
+    #ok{
+        width: fit-content;
+        text-decoration: none;
+        color: #fff;
+        padding: 5px;
+        background-color:#287bff;
+        border-radius: 5px;
+    }
+
+    form input[type="submit"]{
+        outline: none;
+        border: none;
+        width: 100%;
+        max-width:200px;
+        margin: 0 auto;
+        padding: 5px;
+        border-radius: 5px;
+        color: var(--white);
+        background-color: var(--blue);
+    }
 
         /* responsive design */
         @media (max-width: 991px){
@@ -541,7 +587,7 @@
                 </div>
 
                 <!-- Search -->
-                <?= isset($search) ? $search : ''; ?>
+                <?= isset($search) ? $search : '<h3>Admin</h3>'; ?>
 
                 <!-- userImg -->
                 <div class="user">
@@ -592,5 +638,16 @@
             });
 
     }
+</script>
+<script>
+    let msg = document.getElementById('msg');
+    let ok = document.getElementById('ok');
+
+    ok.addEventListener('click', function(e){
+        e.preventDefault();
+        msg.innerHTML = "";
+        msg.style.display = "none";
+    })
+    
 </script>
 </html>
