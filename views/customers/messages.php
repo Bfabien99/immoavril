@@ -86,7 +86,7 @@
                             <td><?= $message['contact'] ?></td>
                             <td><?= substr($message['message'],0,15) . '...' ?></td>
                             <td><?= $message['date'] ?></td>
-                            <td><a href="messages/<?= $message['id'] ?>" class="back">voir</a><a href="message/delete/<?= $message['id'] ?>" class="delete">supp</a></td>
+                            <td><a href="messages/<?= $message['id'] ?>" class="back">voir</a><a href="" class="delete" id="<?= $message['id'] ?>">supp</a></td>
                     </tr>
                 <?php endforeach?>
                 <?php endif?>
@@ -95,5 +95,17 @@
         </table>
 
     </div>
+    <script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer ce message?')){
+                    window.location.href = '/immoavril/customer/compte/message/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

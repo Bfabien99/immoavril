@@ -81,7 +81,7 @@
                     <td><?= $property['addresse']; ?></td>
                     <td><?= $property['superficie']; ?></td>
                     <td><?= ($property['enable'] == 1) ? "oui":"non" ; ?></td>
-                    <td class="action"><a href="/immoavril/customer/compte/propriete/edit/<?= $property['prop_id']; ?>" class="back">Editer</a><a href="/immoavril/customer/compte/propriete/delete/<?= $property['prop_id']; ?>" class="delete">Supp</a></td>
+                    <td class="action"><a href="/immoavril/customer/compte/propriete/edit/<?= $property['prop_id']; ?>" class="back">Editer</a><a href="" class="delete" id="<?= $property['prop_id']; ?>">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
             <?php endif;?>
@@ -89,5 +89,17 @@
             </tbody>
         </table>
     </div>
+    <script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer cette propriété ?')){
+                    window.location.href = '/immoavril/customer/compte/propriete/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -99,7 +99,7 @@ ob_start();
                     <td><?=$message['contact'];?></td>
                     <td><?= substr($message['message'],0,15) . '...';?></td>
                     <td><?= $message['date'];?></td>
-                    <td class="action"><a href="/immoavril/admin/messages/<?= $message['id']; ?>" class="edit">voir</a><a href="/immoavril/admin/message/delete/<?= $message['id']; ?>" class="delete">Supp</a></td>
+                    <td class="action"><a href="/immoavril/admin/messages/<?= $message['id']; ?>" class="edit">voir</a><a href="" class="delete" id="<?= $message['id']; ?>">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
                 <?php endif;?>
@@ -107,6 +107,18 @@ ob_start();
         </table>
     </div>
 
+    <script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer ce message?')){
+                    window.location.href = '/immoavril/admin/message/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 <?php
 $content = ob_get_clean();
 require 'template.php';

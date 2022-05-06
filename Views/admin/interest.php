@@ -88,13 +88,26 @@ ob_start();
                             <td><?= $interest['contact'] ?></td>
                             <td><?= substr($interest['message'],0,15) . '...' ?></td>
                             <td><?= $interest['date'] ?></td>
-                            <td><a href="interest/<?= $interest['id'] ?>" class="back">voir</a><a href="interests/delete/<?= $interest['proprio_email'] ?>" class="delete">supp</a></td>
+                            <td><a href="interest/<?= $interest['id'] ?>" class="back">voir</a><a href="" class="delete" id="<?= $interest['id'] ?>">supp</a></td>
                     </tr>
                 <?php endforeach?>
                 <?php endif?>
                 </tbody>
             </thead>
         </table>
+
+        <script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer ce message?')){
+                    window.location.href = '/immoavril/admin/interests/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 <?php
 $content = ob_get_clean();
 require 'template.php';

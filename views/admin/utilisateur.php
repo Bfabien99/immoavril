@@ -109,7 +109,7 @@ ob_start();
                     <td><?= ucwords($customer['cust_prenoms']);?></td>
                     <td><?= $customer['cust_contact'];?></td>
                     <td><?= date('d-m-Y à H:i',strtotime($customer['cust_created']));?></td>
-                    <td class="action"><a href="/immoavril/admin/utilisateur/delete/<?= $customer['cust_id'];?>" class="delete">Supp</a></td>
+                    <td class="action"><a href="" class="delete" id="<?= $customer['cust_id'];?>">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
                 <?php endif;?>
@@ -117,6 +117,18 @@ ob_start();
         </table>
     </div>
 
+    <script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer cet utilisateur ?')){
+                    window.location.href = '/immoavril/admin/utilisateur/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 <?php
 $content = ob_get_clean();
 require 'template.php';

@@ -38,14 +38,14 @@
                 <li><a href="/immoavril/customer">Accueil</a></li>
                 <li><a href="/immoavril/customer/a_louer">Location</a></li>
                 <li><a href="/immoavril/customer/en_vente">En vente</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="/immoavril/#about">About Us</a></li>
+                <li><a href="/immoavril/#contact">Contact</a></li>
             </ul>
         </div>
         
         <div class="right">
             <a href="/immoavril/customer/compte" class="signup">Compte</a>
-            <a href="/immoavril/customer/deconnect" class="signin" title="Déconnexion">✖</a>
+            <a href="/immoavril/customer/deconnect" class="signin disconnect" title="Déconnexion">✖</a>
         </div>
         
     </header>
@@ -149,5 +149,16 @@
         });
 
     });
+    </script>
+    <script>
+        let deconnect = document.querySelector('.disconnect');
+
+        deconnect.addEventListener('click', function(e){
+            e.preventDefault();
+            if (confirm("Voulez-vous vous deconnecter ?") == true) {
+                window.location.href = "/immoavril/customer/deconnect";
+                };
+            
+            });
     </script>
 </html>

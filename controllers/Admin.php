@@ -510,12 +510,12 @@
             }
         }
 
-        public function deleteInterest($email)
+        public function deleteInterest($id)
         {
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('DELETE FROM messages WHERE proprio_email = '.'"'.$email.'"');
+            $query = $db->prepare("DELETE FROM messages WHERE id = $id");
             $delete = $query->execute();
 
             if($delete){

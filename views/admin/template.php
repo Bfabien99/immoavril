@@ -573,7 +573,7 @@
                 </li>
 
                 <li>
-                    <a href="/immoavril/admin/deconnect">
+                    <a href="" class="disconnect">
                         <img src="<?= IMG_PATH.'Logout.png'; ?>" alt="logout" class="icon">
                         <span class="title">Déconnexion</span>
                     </a>
@@ -656,4 +656,15 @@
     })
     
 </script>
+<script>
+        let deconnect = document.querySelector('.disconnect');
+
+        deconnect.addEventListener('click', function(e){
+            e.preventDefault();
+            if (confirm("Voulez-vous vous deconnecter ?") == true) {
+                window.location.href = "/immoavril/admin/deconnect";
+                };
+            
+            });
+    </script>
 </html>

@@ -258,7 +258,7 @@
         $interest = $admin->getInterestbyId($id);
         $customer = $admin->getCustomerbyEmail($interest['proprio_email']);
         if(empty($customer)){
-            $delete = $admin->deleteInterest($interest['proprio_email']);
+            $delete = $admin->deleteInterest($interest['id']);
         }
         else {
             header('location:/immoavril/admin/interest');

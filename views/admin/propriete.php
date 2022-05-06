@@ -113,7 +113,7 @@ ob_start();
                     <td><?= $property['nom_proprio']; ?></td>
                     <td><?= $property['superficie']; ?></td>
                     <td><?= ($property['enable'] == 1) ? "oui":"non" ; ?></td>
-                    <td class="action"><a href="/immoavril/admin/propriete/edit/<?= $property['prop_id']; ?>" class="edit">Editer</a><a href="/immoavril/admin/propriete/delete/<?= $property['prop_id']; ?>" class="delete">Supp</a></td>
+                    <td class="action"><a href="/immoavril/admin/propriete/edit/<?= $property['prop_id']; ?>" class="edit">Editer</a><a href="" class="delete" id="<?= $property['prop_id']; ?>">Supp</a></td>
                 </tr>
                 <?php endforeach;?>
             <?php endif;?>
@@ -121,6 +121,18 @@ ob_start();
             </tbody>
         </table>
 </div>
+<script>
+        let supprimer = document.querySelectorAll('.delete');
+
+        supprimer.forEach(function(element){
+            element.addEventListener('click',function(e){
+                e.preventDefault();
+                if(confirm('Voulez-vous vraiment supprimer cette propriété ?')){
+                    window.location.href = '/immoavril/admin/propriete/delete/'+element.id;
+                }
+            });
+        });
+    </script>
 <?php
 $content = ob_get_clean();
 require 'template.php';

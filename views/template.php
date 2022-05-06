@@ -32,8 +32,8 @@
                 <li><a href="/immoavril/">Accueil</a></li>
                 <li><a href="a_louer">Location</a></li>
                 <li><a href="en_vente">En vente</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="/immoavril/#about">About Us</a></li>
+                <li><a href="/immoavril/#contact">Contact</a></li>
             </ul>
         </div>
         
