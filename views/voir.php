@@ -42,7 +42,7 @@
         <img src="<?= PROPERTY_IMG. $property['image']?>" alt="">
     </div>
     <div class="userBlock">
-        <img src="<?= !(empty($customer)) ? PROPERTY_IMG.$customer['cust_photo']:IMG_PATH.'userA.jpg'; ?>" alt="" width="90px" height="90px">
+        <img src="<?= !(empty($customer)) ? PROPERTY_IMG.$customer['cust_photo']:'/immoavril/pexels-pixabay-280229.jpg'; ?>" alt="" width="90px" height="90px">
         <div class="userInfo">
             <h2 class="nom">Propriétaire : <?= $property['nom_proprio']?></h2>
             <h3 class="tel">Contact : <?= $property['contact_proprio']?></h3>

@@ -38,7 +38,9 @@ ob_start();
     <?php endif;?>
     
     <?php else:?>
-        <h3>Désolé, nous n'avons trouvé aucun résultat</h3>
+        <h3 style="margin: 10px;
+        color:#287bff">Désolé, nous n'avons trouvé aucun résultat</h3>
+        <a href="/immoavril/" class="btn" style="text-decoration: none;color:white;background-color:#287bff;padding:5px;border-radius:6px">Retour</a>
     <?php endif;?>
 
     <script>
