@@ -47,7 +47,7 @@ ob_start();
                         <h3><span class="libelé">Nom: </span><?= $getMessage['nom'] ?></h3>
                         <h3><span class="libelé">Email: </span><?= $getMessage['email'] ?></h3>
                         <h3><span class="libelé">Contact: </span><?= $getMessage['contact'] ?></h3>
-                        <h3><span class="libelé">Message: </span><?= $getMessage['message'] ?></h3>
+                        <h3><span class="libelé">Message: </span><?= nl2br($getMessage['message']) ?></h3>
                         <h3><span class="libelé">Recu le: </span><?= $getMessage['date'] ?></h3>
                         <a href="/immoavril/admin/messages" class="back">Retour</a>
                     </div>

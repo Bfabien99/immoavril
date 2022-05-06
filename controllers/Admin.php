@@ -74,6 +74,23 @@
             }
         }
 
+        public function getRecentCustomer()
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM customers ORDER BY cust_created DESC LIMIT 3');
+            $query->execute();
+
+            $allCustomers = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($allCustomers){
+                return $allCustomers;
+            }
+            else {
+                return false;
+            }
+        }
+
         public function getCustomerbyId($id)
         {
             $database = new ADatabase();
@@ -278,7 +295,7 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 LIMIT 3');
+            $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 ORDER BY prop_created DESC LIMIT 9');
             $query->execute();
 
             $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -364,6 +381,23 @@
             $db = $database->dbconnect();
 
             $query = $db->prepare('SELECT * FROM proprietes WHERE addresse LIKE '.'"'.'%'.$search.'%'.'"'.' OR prix <=  '.'"'.$search.'"'.' AND enable = 1');
+            $query->execute();
+
+            $property = $query->fetchAll(PDO::FETCH_ASSOC);
+            if($property){
+                return $property;
+            }
+            else {
+                return false;
+            }
+        }
+
+        public function searchProperty2($search)
+        {
+            $database = new ADatabase();
+            $db = $database->dbconnect();
+
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse LIKE '.'"'.'%'.$search.'%'.'"'.' OR nom_proprio LIKE '.'"'.'%'.$search.'%'.'"'.' OR prix <=  '.'"'.$search.'"'.' AND enable = 1');
             $query->execute();
 
             $property = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -492,11 +526,12 @@
             }
         }
 
-        public function getMessages(){
+
+        public function getAllAdminMessages(){
             $database = new CDatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM messages');
+            $query = $db->prepare('SELECT * FROM `messages` WHERE identifier = 0');
             $query->execute();
 
             $messages = $query->fetchAll(PDO::FETCH_ASSOC);

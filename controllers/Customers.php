@@ -159,7 +159,7 @@
             $database = new CDatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM messages WHERE proprio_email = '.'"'.$email.'"');
+            $query = $db->prepare('SELECT * FROM messages WHERE proprio_email = '.'"'.$email.'"'.' AND identifier = 1');
             $query->execute();
 
             $messages = $query->fetchAll(PDO::FETCH_ASSOC);

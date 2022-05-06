@@ -16,6 +16,23 @@ ob_start();
             height: 35px;
             background: url('/immoavril/assets/images/icon/marker.png') no-repeat center/cover;
         }
+
+        #msg{
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            padding: 5px;
+            margin: 0 auto;
+            color: #999;
+        }
+
+        .detail h3{
+            text-decoration: underline;
+        }
+
+        .description h3{
+            text-decoration: underline;
+        }
     </style>
 
 <?php if(!empty($property)):?>
@@ -25,9 +42,9 @@ ob_start();
     <div class="userBlock">
         <img src="<?= !(empty($customerPic)) ? PROPERTY_IMG.$customerPic['cust_photo']:IMG_PATH.'userA.jpg'; ?>" alt="" width="90px" height="90px">
         <div class="userInfo">
-            <h2 class="nom">Propriétaire : <?= $property['nom_proprio']?></h2>
+            <h3 class="nom">Propriétaire : <?= $property['nom_proprio']?></h3>
             <h3 class="tel">Contact : <?= $property['contact_proprio']?></h3>
-            <h4 class="email">Email : <?= !empty($property['email_proprio'])? $property['email_proprio']:""?></h4>
+            <h3 class="email">Email : <?= !empty($property['email_proprio'])? $property['email_proprio']:""?></h3>
         </div>
     </div>
 
@@ -37,9 +54,9 @@ ob_start();
             <div class="detail">
                 <h3>Detail</h3>
                 <div>
-                    <h4>Chambre: <span><?= $property['nb_chambre']; ?></span> </h4>
-                    <h4>Douche: <span><?= $property['nb_douche']; ?></span> </h4>
-                    <h4>Superficie: <span><?= $property['superficie']; ?></span> </h4>
+                    <h4>Pièce: <span><?= $property['nb_piece']; ?></span> </h4>
+                    <h4>Prix: <span><?= $property['prix']; ?> Fcfa</span> </h4>
+                    <h4>Superficie: <span><?= $property['superficie']; ?> m2</span> </h4>
                     <h4>Type: <span><?= $property['type']; ?></span> </h4>
                     <h4>Localisation: <span><?= $property['addresse']; ?></span> </h4>
                     <h4>vues: <span><?= $property['vue']; ?></span> </h4>
@@ -48,11 +65,14 @@ ob_start();
 
             <div class="description">
                 <h3>Description</h3>
-                <p><?= $property['Description'];?></p>
+                <img src="<?= PROPERTY_IMG. $property['image']?>" alt="" width="300px" height="300px" style="margin:0 auto;">
+                <h4 style="margin:0 auto;"><span><?= mb_strtoupper($property['titre']); ?></span> </h4>
+                <p><?= nl2br(ucfirst($property['Description']));?></p>
             </div>
 
-            <div id="map">
-
+            <div class="description">
+                <h3>Localisation</h3>
+                <div id="map"></div>
             </div>
 
         <?php if($property['email_proprio'] !== $customer['cust_email']):?>
@@ -145,7 +165,7 @@ function setupMap(center){
     
       const marker = new mapboxgl.Marker()
             .setLngLat([<?php echo $_SESSION['xmobilier_lng'];?>, <?php echo $_SESSION['xmobilier_lat'];?>])
-            .setPopup(new mapboxgl.Popup().setHTML("<h4><?php echo $property['prix']?> fcfa</h4><p><?php echo urldecode($location)?></p>"))
+            .setPopup(new mapboxgl.Popup().setHTML("<img src='<?php echo '/immoavril/uploads/'.$property['image']?>' width='100%' height='100px' style='object-fit:cover;'><h2><?php echo $property['titre']?></h2><h4><?php echo $property['prix']?> fcfa</h4><p><?php echo $property['addresse']?></p>"))
             .addTo(map); // add the marker to the map
         
             marker.togglePopup(); // toggle popup open or closed

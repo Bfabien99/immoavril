@@ -131,7 +131,7 @@
                 <input type="password" name="password" id="password" required>
             </div>
             
-            <input type="submit" value="Login">
+            <input type="submit" value="Signup">
 
             <div id="msg"></div>
 

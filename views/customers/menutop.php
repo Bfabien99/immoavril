@@ -14,10 +14,12 @@ define('IMG_PATH','\immoavril\assets\images\icon\\');
     <a href="/immoavril/customer" class="back">Accueil</a>
 </header>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Raleway:ital,wght@0,100;0,300;0,500;0,600;1,100;1,300;1,500;1,600&display=swap');
     *{
         padding: 0;
         margin: 0;
         box-sizing: border-box;
+        font-family: 'Cormorant Garamond','Poppins','Montserrat','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
     body{
         width: 100%;

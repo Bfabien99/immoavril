@@ -14,7 +14,7 @@ ob_start();
             <div class="cardContent">
                 <div class="type_price">
                     <span><?= $property['type']; ?></span>
-                    <h2><?= $property['prix']; ?></h2>
+                    <h2><?= $property['prix']; ?> Fcfa</h2>
                 </div>
                 <div class="title_view">
                     <h3><?= $property['titre']; ?></h3>
@@ -34,6 +34,7 @@ ob_start();
         <?php endforeach;?>
 
     </div>
+    
     <?php if($title == "Accueil"):?>
         <a href="" id="loadmore">Charger plus</a>
     <?php endif;?>
@@ -65,7 +66,7 @@ ob_start();
                                         <div class='cardContent'>
                                             <div class='type_price'>
                                                 <span>${datas.type}</span>
-                                                <h2>${datas.prix}</h2>
+                                                <h2>${datas.prix} Fcfa</h2>
                                             </div>
                                             <div class='title_view'>
                                                 <h3>${datas.titre}</h3>

@@ -18,6 +18,23 @@
             height: 35px;
             background: url('/immoavril/assets/images/icon/marker.png') no-repeat center/cover;
         }
+
+        #msg{
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            padding: 5px;
+            margin: 0 auto;
+            color: #999;
+        }
+
+        .detail h3{
+            text-decoration: underline;
+        }
+
+        .description h3{
+            text-decoration: underline;
+        }
     </style>
 
 <?php if(!empty($property)):?>
@@ -39,9 +56,9 @@
             <div class="detail">
                 <h3>Detail</h3>
                 <div>
-                    <h4>Chambre: <span><?= $property['nb_chambre']; ?></span> </h4>
-                    <h4>Douche: <span><?= $property['nb_douche']; ?></span> </h4>
-                    <h4>Superficie: <span><?= $property['superficie']; ?></span> </h4>
+                    <h4>Pièce: <span><?= $property['nb_piece']; ?></span> </h4>
+                    <h4>Prix: <span><?= $property['prix']; ?> Fcfa</span> </h4>
+                    <h4>Superficie: <span><?= $property['superficie']; ?> m2</span> </h4>
                     <h4>Type: <span><?= $property['type']; ?></span> </h4>
                     <h4>Localisation: <span><?= $property['addresse']; ?></span> </h4>
                     <h4>vues: <span><?= $property['vue']; ?></span> </h4>
@@ -50,12 +67,16 @@
 
             <div class="description">
                 <h3>Description</h3>
-                <p><?= $property['Description'];?></p>
+                <img src="<?= PROPERTY_IMG. $property['image']?>" alt="" width="300px" height="300px" style="margin:0 auto;">
+                <h4 style="margin:0 auto;"><span><?= mb_strtoupper($property['titre']); ?></span> </h4>
+                <p><?= nl2br(ucfirst($property['Description']));?></p>
             </div>
 
-            <div id="map">
-
+            <div class="description">
+                <h3>Localisation</h3>
+                <div id="map"></div>
             </div>
+            
 
         <form action="" method="post" id="messageForm">
             <h2>Contacter l' annonceur</h2>
@@ -145,7 +166,7 @@
             
                 const marker = new mapboxgl.Marker()
                     .setLngLat([<?php echo $_SESSION['xmobilier_lng'];?>, <?php echo $_SESSION['xmobilier_lat'];?>])
-                    .setPopup(new mapboxgl.Popup().setHTML("<h4><?php echo $property['prix']?> fcfa</h4><p><?php echo urldecode($location)?></p>"))
+                    .setPopup(new mapboxgl.Popup().setHTML("<img src='<?php echo '/immoavril/uploads/'.$property['image']?>' width='100%' height='100px' style='object-fit:cover;'><h2><?php echo $property['titre']?></h2><h4><?php echo $property['prix']?> fcfa</h4><p><?php echo $property['addresse']?></p>"))
                     .addTo(map); // add the marker to the map
                 
                     marker.togglePopup(); // toggle popup open or closed

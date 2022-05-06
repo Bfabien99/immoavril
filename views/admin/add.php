@@ -98,14 +98,14 @@ ob_start();
             </div>
             <div class="group">
                 <label for="superficie">Superficie (*)</label>
-                <input required type="number" name="superficie" id="superficie" min="0" value="<?= !empty($_POST['superficie']) ? $_POST['superficie']:""?>">
+                <input required type="number" name="superficie" id="superficie" min="0" value="<?= !empty($_POST['superficie']) ? $_POST['superficie']:""?>" placeholder="en m2">
             </div>
             <div class="group">
                 <label for="titre">Type (*)</label>
                 <select name="type" id="">
                     <option value="">--</option>
-                    <option value="Vendre">Vendre</option>
-                    <option value="Location">Location</option>
+                    <option value="vendre">Vendre</option>
+                    <option value="location">Location</option>
                 </select>
             </div>
 
@@ -114,11 +114,11 @@ ob_start();
         <div class="right">
             <div class="group">
                 <label for="prix">Prix de la propriété (*)</label>
-                <input required type="number" name="prix" id="prix" min="0" value="<?= !empty($_POST['prix']) ? $_POST['prix']:""?>">
+                <input required type="number" name="prix" id="prix" min="0" value="<?= !empty($_POST['prix']) ? $_POST['prix']:""?>" placeholder="en FCFA">
             </div>
             <div class="group">
                 <label for="description">Description de la propriété (*)</label>
-                <textarea required name="description" id="description" cols="30" rows="10"><?= !empty($_POST['description']) ? $_POST['description']:""?></textarea>
+                <textarea required name="description" id="description" cols="30" rows="10" placeholder="//Une description de votre propriété"><?= !empty($_POST['description']) ? $_POST['description']:""?></textarea>
             </div>
             <div class="group">
                 <label for="nom proprio">Nom du propriétaire (*)</label>

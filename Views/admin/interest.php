@@ -86,9 +86,9 @@ ob_start();
                             <td><?= $interest['nom'] ?></td>
                             <td><?= $interest['email'] ?></td>
                             <td><?= $interest['contact'] ?></td>
-                            <td><?= $interest['message'] ?></td>
+                            <td><?= substr($interest['message'],0,15) . '...' ?></td>
                             <td><?= $interest['date'] ?></td>
-                            <td><a href="interest/<?= $interest['id'] ?>" class="back">voir</a><a href="interests/delete/<?= $message['id'] ?>" class="delete">supp</a></td>
+                            <td><a href="interest/<?= $interest['id'] ?>" class="back">voir</a><a href="interests/delete/<?= $interest['proprio_email'] ?>" class="delete">supp</a></td>
                     </tr>
                 <?php endforeach?>
                 <?php endif?>

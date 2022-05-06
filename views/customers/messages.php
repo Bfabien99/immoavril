@@ -84,7 +84,7 @@
                             <td><?= $message['nom'] ?></td>
                             <td><?= $message['email'] ?></td>
                             <td><?= $message['contact'] ?></td>
-                            <td><?= $message['message'] ?></td>
+                            <td><?= substr($message['message'],0,15) . '...' ?></td>
                             <td><?= $message['date'] ?></td>
                             <td><a href="messages/<?= $message['id'] ?>" class="back">voir</a><a href="message/delete/<?= $message['id'] ?>" class="delete">supp</a></td>
                     </tr>

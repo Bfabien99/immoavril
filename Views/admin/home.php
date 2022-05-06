@@ -93,7 +93,7 @@ ob_start();
                 <tr>
                     <td><?= $property['titre']?></td>
                     <td><?= number_format($property['prix'], 2, '.', ',')?></td>
-                    <td><?= $property['nom_proprio']?></td>
+                    <td><?= ucwords($property['nom_proprio'])?></td>
                     <td><?= $property['contact_proprio']?></td>
                     <td><?= $property['vue']?></td>
                 </tr>
@@ -113,15 +113,15 @@ ob_start();
 
         <table>
 
-        <?php if(!empty($customers)):?>
-            <?php foreach($customers as $customer):?>
+        <?php if(!empty($rcustomers)):?>
+            <?php foreach($rcustomers as $customer):?>
                 <tr>
                     <td width="60px">
                         <div class="imgBox">
                         <img src="<?= PROPERTY_IMG.$customer['cust_photo'] ?>" alt="user" class="userImg">
                         </div>
                     </td>
-                    <td><h4><?= $customer['cust_nom']." ".$customer['cust_prenoms'];?><br> <span><?= $customer['cust_created']?></span></h4></td>
+                    <td><h4><?= ucwords($customer['cust_nom']." ".$customer['cust_prenoms']);?><br> <span><?= $customer['cust_created']?></span></h4></td>
                 </tr>
             <?php endforeach;?>
         <?php endif;?>

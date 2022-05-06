@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'link.php';?>
     <title><?=$title;?></title>
+    <style>
+        section{
+            position: relative;
+            background: url('/immoavril/pexels-pixabay-280229.jpg') no-repeat center/cover;
+        }
+        section .title{
+            position: absolute;
+            top: 40%;
+            font-size: 2.3em;
+            margin: 0 auto;
+            width: 90%;
+            text-transform: uppercase;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0px 0px 10px #000;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -28,6 +45,7 @@
     </header>
     <?php if($title !== "propriete"):?>
     <section>
+        <h1 class="title">X-mobilier vous propose une sélection des plus beaux appartements et maisons à vendre</h1>
         <form action="">
             <input type="search" name="search" id="locationSearch" placeholder="Recherche par prix, localisation...">
             <input type="submit" value="🔍">
@@ -44,8 +62,12 @@
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores, accusantium facere nihil assumenda tempore suscipit earum velit nisi reiciendis ab unde aut vel doloremque officia eos ipsam ex omnis sequi quam. Eveniet, consequuntur inventore? Corporis dignissimos odio sed cupiditate similique necessitatibus rem, animi dolor voluptatum, tempore quibusdam aperiam cumque? Consequatur!</p>
         </div>
         <div id="contact">
-            <h1>Contact</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, rem.</p>
+        <h1>Contact</h1>
+            <h3>Pour toutes vos préoccupations, contacter nous...</h3>
+            <h3>Tel: +212 658 987 654</h3>
+            <h3>Email: xmobilier@nan.ci</h3>
+            <br>
+            <h3>Ou remplissez ce formulaire et nous vous contacterons</h3>
             <form action="" method="post" id="contactForm">
             <h2>Nous Contacter</h2>
             <div class="group">
@@ -76,6 +98,7 @@
         <?php endif;?>
     
     </div>
+    <footer style="padding: 10px;display:flex;justify-content:center; color:#999"><h3>&copy; 2022 - Tous droits réservé, X-MOBILIER - PROJETAVRIL_NAN522 - BFABIEN99</h3></footer>
 </body>
 <script>
     let autocomplete;

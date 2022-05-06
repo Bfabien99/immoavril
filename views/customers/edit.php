@@ -113,17 +113,17 @@
                     </div>
                     <div class="group">
                         <label for="superficie">Superficie</label>
-                        <input required type="number" name="superficie" id="superficie" min="0" value="<?= $property['superficie'];?>">
+                        <input required type="number" name="superficie" id="superficie" min="0" value="<?= $property['superficie'];?>" placeholder="en m2">
                     </div>
                     <div class="group">
                         <label for="titre">Type</label>
                         <select name="type" id="">
-                            <?php if($property['etat'] == 'Vendre'):?>
-                                <option value="Vendre">Vendre</option>
-                                <option value="Location">Location</option>
+                            <?php if($property['type'] == 'vendre'):?>
+                                <option value="vendre">Vendre</option>
+                                <option value="location">Location</option>
                             <?php else:?>
-                                <option value="Vendre">Vendre</option>
-                                <option value="Location">Location</option>
+                                <option value="location">Location</option>
+                                <option value="vendre">Vendre</option>
                             <?php endif;?>
                         </select>
                     </div>

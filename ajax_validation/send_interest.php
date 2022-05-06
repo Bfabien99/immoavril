@@ -11,23 +11,49 @@
         $message = inputClean($_POST['message']);
         $database = new CDatabase();
         $db = $database->dbconnect();
+        $getCust = $db->query('SELECT * FROM customers WHERE cust_email = '.'"'.$_SESSION['xcustomer_email'].'"')->fetch(PDO::FETCH_ASSOC);
 
-        $query = $db->prepare("INSERT INTO messages (nom,contact,email,message,propriete_id,proprio_email) VALUES(:nom,:contact,:email,:message,:propriete_id,:proprio_email)");
-        $insert = $query->execute([
-            "nom" => $nom,
-            "contact" => $contact,
-            "email" => $email,
-            "message" => !empty($message) ? $message : "JE SUIS INTERRESSER PAR CETTE PROPRIETE",
-            "propriete_id" => $_SESSION['xmobilier_id'],
-            "proprio_email" => $_SESSION['xcustomer_email']
-        ]);
+            if(!empty($getCust)){
+                $query = $db->prepare("INSERT INTO messages (nom,contact,email,message,propriete_id,proprio_email,identifier) VALUES(:nom,:contact,:email,:message,:propriete_id,:proprio_email,:identifier)");
+                $insert = $query->execute([
+                "nom" => $nom,
+                "contact" => $contact,
+                "email" => $email,
+                "message" => !empty($message) ? $message : "JE SUIS INTERRESSER PAR CETTE PROPRIETE",
+                "propriete_id" => $_SESSION['xmobilier_id'],
+                "proprio_email" => $_SESSION['xcustomer_email'],
+                "identifier" => 1
+            ]);
 
-        if($insert){
-            echo "OK";
+            if($insert)
+            {
+                echo "OK";
+            }
+            else 
+            {
+                echo "Veuillez réessayer plus tard";
+            }
         }
-        else {
-            echo "Veuillez réessayer plus tard";
+        else
+        {
+            $query = $db->prepare("INSERT INTO messages (nom,contact,email,message,propriete_id,proprio_email) VALUES(:nom,:contact,:email,:message,:propriete_id,:proprio_email)");
+            $insert = $query->execute([
+                "nom" => $nom,
+                "contact" => $contact,
+                "email" => $email,
+                "message" => !empty($message) ? $message : "JE SUIS INTERRESSER PAR CETTE PROPRIETE",
+                "propriete_id" => $_SESSION['xmobilier_id'],
+                "proprio_email" => $_SESSION['xcustomer_email']
+            ]);
+
+            if($insert){
+                echo "OK";
+            }
+            else {
+                echo "Veuillez réessayer plus tard";
+            }
         }
+        
         
     }
     else {

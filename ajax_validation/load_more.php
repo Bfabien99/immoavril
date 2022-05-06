@@ -7,7 +7,7 @@ if (isset($_POST['limite'])) {
     $database = new ADatabase();
     $db = $database->dbconnect();
 
-    $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 LIMIT '.$_POST['limite'].','.$limite);
+    $query = $db->prepare('SELECT * FROM proprietes WHERE enable = 1 ORDER BY prop_created DESC LIMIT '.$_POST['limite'].','.$limite);
     $query->execute();
 
     $allProperties = $query->fetchAll(PDO::FETCH_ASSOC);

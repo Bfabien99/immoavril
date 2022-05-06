@@ -96,8 +96,8 @@ ob_start();
                             <td><img src="<?= IMG_PATHS.'open_envelope.png'?>" alt="message_envelope" class="envelope"></td>
                         <?php endif;?>
                     <td><?= ucfirst($message['nom']);?></td>
-                    <td><?=($message['contact']);?></td>
-                    <td><?= $message['message'];?></td>
+                    <td><?=$message['contact'];?></td>
+                    <td><?= substr($message['message'],0,15) . '...';?></td>
                     <td><?= $message['date'];?></td>
                     <td class="action"><a href="/immoavril/admin/messages/<?= $message['id']; ?>" class="edit">voir</a><a href="/immoavril/admin/message/delete/<?= $message['id']; ?>" class="delete">Supp</a></td>
                 </tr>

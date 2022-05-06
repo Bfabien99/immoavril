@@ -4,7 +4,7 @@ define('PROPERTY_IMG','\immoavril\uploads\\');
 $title = 'proprietes';
 $search = '<form class="search" method="GET">
 <label for="search">
-    <input type="search" name="search" id="locationSearch" placeholder="Search..." autocomplete="off">
+    <input type="search" name="search" id="locationSearch" placeholder="Search... addresse, prix, propriétaire" autocomplete="off">
     <img src="'.IMG_PATHS.'search.png'.'" alt="search" class="search_icon">
 </label>
 </form>';
@@ -21,7 +21,7 @@ ob_start();
         border-radius:20px;
         display: grid;
         min-height: 200px;
-        max-height: 600px;
+        max-height: 900px;
         overflow: auto;
         grid-template-rows: 50px 1fr;
         grid-gap: 20px;
@@ -44,8 +44,8 @@ ob_start();
     }
 
     .properties table tbody tr td .imgBox{
-        width: 150px;
-        height: 150px;
+        max-width: 350px;
+        max-height: 350px;
         overflow: hidden;
         padding: 5px;
         margin: 0 auto;
@@ -54,7 +54,7 @@ ob_start();
     .properties table tbody tr td .imgBox img{
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
     }
 
     .properties table tbody tr td.action a{
@@ -88,7 +88,9 @@ ob_start();
                     <td>Image</td>
                     <td>Titre</td>
                     <td>Addresse</td>
-                    <td>Superficie</td>
+                    <td>Prix (Fcfa)</td>
+                    <td>Propriétaire</td>
+                    <td>Superficie (m2)</td>
                     <td>Active</td>
                     <td colspan="2">Action</td>
                 </tr>
@@ -107,6 +109,8 @@ ob_start();
                     </td>
                     <td><?= $property['titre']; ?></td>
                     <td><?= $property['addresse']; ?></td>
+                    <td><?= $property['prix']; ?></td>
+                    <td><?= $property['nom_proprio']; ?></td>
                     <td><?= $property['superficie']; ?></td>
                     <td><?= ($property['enable'] == 1) ? "oui":"non" ; ?></td>
                     <td class="action"><a href="/immoavril/admin/propriete/edit/<?= $property['prop_id']; ?>" class="edit">Editer</a><a href="/immoavril/admin/propriete/delete/<?= $property['prop_id']; ?>" class="delete">Supp</a></td>

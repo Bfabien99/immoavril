@@ -113,14 +113,14 @@
                 </div>
                 <div class="group">
                     <label for="superficie">Superficie (*)</label>
-                    <input required type="number" name="superficie" id="superficie" min="0" value="<?= !empty($_POST['superficie']) ? $_POST['superficie']:""?>">
+                    <input required type="number" name="superficie" id="superficie" min="0" value="<?= !empty($_POST['superficie']) ? $_POST['superficie']:""?>" placeholder="en m2">
                 </div>
                 <div class="group">
                     <label for="titre">Type (*)</label>
                     <select name="type" id="" required>
                         <option value="">--</option>
-                        <option value="Vendre">Vendre</option>
-                        <option value="Location">Location</option>
+                        <option value="vendre">Vendre</option>
+                        <option value="location">Location</option>
                     </select>
                 </div>
 

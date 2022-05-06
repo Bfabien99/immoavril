@@ -47,13 +47,16 @@ ob_start();
                         <h4><span class="libelé">Localisation : </span><?= $message['addresse'] ?></h4>
                         <h4><span class="libelé">Type : </span><?= $message['type'] ?></h4>
                         <h4><span class="libelé">Prix : </span><?= $message['prix'] ?></h4>
+                        <h4><span class="libelé">Proprio Nom: </span><?= $message['nom_proprio'] ?></h4>
+                        <h4><span class="libelé">Proprio Email : </span><?= $message['proprio_email'] ?></h4>
+                        <h4><span class="libelé">Proprio Contact : </span><?= $message['contact_proprio'] ?></h4>
                         <p class="separator">
                             Informations message
                         </p>
                         <h3><span class="libelé">Envoyé par : </span><?= $message['nom'] ?></h3>
                         <h4><span class="libelé">Email : </span><?= $message['email'] ?></h4>
                         <h4><span class="libelé">Contact : </span><?= $message['contact'] ?></h4>
-                        <h4><span class="libelé">Message : </span><?= $message['message'] ?></h4>
+                        <h4><span class="libelé">Message : </span><?= nl2br($message['message']) ?></h4>
                         <h4><span class="libelé">Reçu le : </span><?= $message['date'] ?></h4>
                     </div>
             </div>

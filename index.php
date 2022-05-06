@@ -11,7 +11,6 @@
     /* ------------- HOME ROUTES ------------------*/
     /* GET */
     $router->map('GET', '/immoavril/',function(){
-        session_unset();
         $adminClass = new Admin();
         $properties = $adminClass->getActiveProperty();//Les propriétés activées
         $title = "Accueil";
@@ -20,6 +19,16 @@
             $title = "Search";
         }
         require 'views/home.php';
+    });
+
+    $router->map('GET', '/immoavril/customer/deconnect',function(){
+        unset($_SESSION['xcustomer_id']);
+        header('location: /immoavril/');
+    });
+
+    $router->map('GET', '/immoavril/admin/deconnect',function(){
+        unset($_SESSION['xadmin_id']);
+        header('location: /immoavril/');
     });
 
     $router->map('GET', '/immoavril/login',function(){
@@ -79,6 +88,7 @@
         $adminClass = new Admin();
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $customers = $adminClass->getAllCustomer();//Les utilisateurs
+        $rcustomers = $adminClass->getRecentCustomer();//Les utilisateurs
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
         $recents = $adminClass->getRecentProperty();//Toutes les propriétés
         $messages = $adminClass->getAllMessage();//Tous les mesages
@@ -97,7 +107,7 @@
         $admin = $adminClass->getAdmin($_SESSION['xadmin_id']);
         $properties = $adminClass->getAllProperty();//Toutes les propriétés
         if(!empty($_GET['search'])){
-            $properties = $adminClass->searchProperty(strip_tags($_GET['search']));
+            $properties = $adminClass->searchProperty2(strip_tags($_GET['search']));
         }
         require 'views/admin/propriete.php';
     });
@@ -221,25 +231,8 @@
             die('ERROR');
         }
         $adminClass = new Admin();
-        $messages = $adminClass->getMessages();
-        $customers = $adminClass->getAllCustomer();
+        $interests = $adminClass->getAllAdminMessages();
 
-        if(!empty($messages) && !empty($customers))
-        {
-            foreach($customers as $customer)
-            {
-                foreach($messages as $message){
-                    if($customer['cust_email'] != $message['proprio_email']){
-                        $interests [] = $message;
-                    }
-                }
-            }
-        }
-        elseif(!empty($messages)){
-            foreach($messages as $message){
-                $interests [] = $message;
-            }
-        }
         require 'views/admin/interest.php';
     });
 
@@ -250,7 +243,6 @@
             die('ERROR');
         }
         $customerClass= new Customers();
-        $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
         $message = $customerClass->getMessagebyId($id);
         if($message){Admin::lu($id);}
         require 'views/admin/read.php';
@@ -267,6 +259,9 @@
         $customer = $admin->getCustomerbyEmail($interest['proprio_email']);
         if(empty($customer)){
             $delete = $admin->deleteInterest($interest['proprio_email']);
+        }
+        else {
+            header('location:/immoavril/admin/interest');
         }
         
         if($delete){
@@ -522,6 +517,7 @@
         $customerClass= new Customers();
         $customerPic = $adminClass->getCustomerbyEmail($property['email_proprio']);
         $customer = $customerClass->getCustomer($_SESSION['xcustomer_id']);
+        $Increment = $adminClass->vueIncrement($id);
         require 'views/customers/voir.php';
     });//TERMINER
 
@@ -777,7 +773,7 @@
                             //On stocke le fichier
                             $image = str_replace("/","",password_hash(rand(1,9999999), PASSWORD_DEFAULT) . basename($_FILES['image']['name']));
                             
-                            $insertProperty=$customerClass->insertCustomersProperty($_SESSION['xcustomer_id'],inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, $customer['cust_nom'],  $customer['cust_contact'],  $customer['cust_email']);
+                            $insertProperty=$customerClass->insertCustomersProperty($_SESSION['xcustomer_id'],inputClean($_POST['titre']), inputClean($_POST['nombre_piece']), inputClean($_POST['nombre_chambre']), inputClean($_POST['nombre_douche']), inputClean($_POST['nombre_wc']), inputClean($_POST['addresse']), inputClean($_POST['superficie']), inputClean($_POST['type']), inputClean($_POST['prix']), inputClean($_POST['description']), $image, inputClean($customer['cust_nom']." ".$customer['cust_prenoms']),  inputClean($customer['cust_contact']),  inputClean($customer['cust_email']));
     
                             if($insertProperty){
                                 $msg = "<div id='msg'><p class='success'>Enregistré</p><a href='' id='ok'>ok</a></div>";

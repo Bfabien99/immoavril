@@ -89,7 +89,7 @@ ob_start();
                     <td>Nom</td>
                     <td>Prénoms</td>
                     <td>Contact</td>
-                    <td>Publication</td>
+                    <td>Inscrit le</td>
                     <td colspan="2">Action</td>
                 </tr>
 
@@ -108,7 +108,7 @@ ob_start();
                     <td><?= ucfirst($customer['cust_nom']);?></td>
                     <td><?= ucwords($customer['cust_prenoms']);?></td>
                     <td><?= $customer['cust_contact'];?></td>
-                    <td>2</td>
+                    <td><?= date('d-m-Y à H:i',strtotime($customer['cust_created']));?></td>
                     <td class="action"><a href="/immoavril/admin/utilisateur/delete/<?= $customer['cust_id'];?>" class="delete">Supp</a></td>
                 </tr>
                 <?php endforeach;?>

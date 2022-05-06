@@ -13,10 +13,14 @@
     <title><?= $title;?></title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Raleway:ital,wght@0,100;0,300;0,500;0,600;1,100;1,300;1,500;1,600&display=swap');
+        html{
+            scroll-behavior: smooth;
+        }
         *{ margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: 'Cormorant Garamond','Poppins','Montserrat','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
         :root{
             --white: #fff;
@@ -153,6 +157,8 @@
             top: 0;
             z-index: 1000;
             background-color:var(--white);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0px 10px 5px rgba(0, 0, 0, 0.08);
         }
 
         .toggle{
@@ -567,7 +573,7 @@
                 </li>
 
                 <li>
-                    <a href="/immoavril/">
+                    <a href="/immoavril/admin/deconnect">
                         <img src="<?= IMG_PATH.'Logout.png'; ?>" alt="logout" class="icon">
                         <span class="title">Déconnexion</span>
                     </a>
