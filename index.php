@@ -719,7 +719,7 @@
                 {
                     $msg = "<div id='msg'><p class='error'>Veuillez confirmer votre mot de passe</p><a href='' id='ok'>ok</a></div>";
                 }
-                elseif((!empty($_POST['npassword']) || !empty($_POST['cpassword'])) && $_POST['npassword'] == $_POST['cpassword'])
+                elseif((!empty($_POST['npassword']) && !empty($_POST['cpassword'])) && $_POST['npassword'] == $_POST['cpassword'])
                 {    
                     $Customer=$customerClass->updateCustomer2($_SESSION['xcustomer_id'],$_POST['pseudo'], $_POST['email'], encryptpass($_POST['npassword']));
 
@@ -734,15 +734,9 @@
                     }
                 }
                 else{
-                    $Customer=$customerClass->updateCustomer2($_SESSION['xcustomer_id'],$_POST['pseudo'], $_POST['email'], $customer['cust_password']);
-
-                    if ($Customer) {
-                        $msg = "Modification effectuée";
-                        header('Location: /immoavril/customer/compte/securite');
-                    }
-                    else{
-                        $msg = "<div id='msg'><p class='error'>Non enregistré</p><a href='' id='ok'>ok</a></div>";
-                    }
+                    
+                    $msg = "<div id='msg'><p class='error'>Les mots de passe ne corresponde pas</p><a href='' id='ok'>ok</a></div>";
+                    
                 }
             }
             else{
