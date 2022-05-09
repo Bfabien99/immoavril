@@ -414,7 +414,7 @@
             $database = new ADatabase();
             $db = $database->dbconnect();
 
-            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse ='.'"'.$search.'"'.' OR prix <=  '.'"'.$search.'"'.' AND type = '.'"'.$type.'"'.' AND enable = 1');
+            $query = $db->prepare('SELECT * FROM proprietes WHERE addresse LIKE '.'"'.'%'.$search.'%'.'"'.' OR prix <=  '.'"'.$search.'"'.' AND type = '.'"'.$type.'"'.' AND enable = 1');
             $query->execute();
 
             $property = $query->fetchAll(PDO::FETCH_ASSOC);
