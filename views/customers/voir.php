@@ -143,18 +143,21 @@ curl_close($curl);
 ?>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmFiaWVuYnJvdTk5IiwiYSI6ImNsMmthZDM5aTBlYzYza2wxYmUwNjQzeDMifQ.WBt2pWQTIbQpj1fZMi3IWQ';
-
+    
+// Retrouver la position exacte du visiteur
 navigator.geolocation.getCurrentPosition(successLocation,errorLocation,{ enableHighAccuracy: true });
 
-
+// Si la position est retrouvée
 function successLocation(position){
     setupMap([position.coords.longitude, position.coords.latitude]);
 }
 
+// Sinon on génère une position par défaut
 function errorLocation(){
     setupMap([<?php echo $_SESSION['xmobilier_lat'];?>,<?php echo $_SESSION['xmobilier_lng'];?>])
 }
 
+// on place les markers sur la carte
 function setupMap(center){
     var map = new mapboxgl.Map({
         container: 'map',
